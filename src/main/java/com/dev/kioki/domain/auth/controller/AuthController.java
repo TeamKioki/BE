@@ -37,4 +37,11 @@ public class AuthController {
     public BaseResponse<AuthDTO.TokenResponse> reissueToken(@Parameter(name = "refreshToken", hidden = true) String refreshToken) {
         return BaseResponse.onSuccess(authService.reissueToken(refreshToken));
     }
+
+    @GetMapping("/logout")
+    @Operation(summary="로그아웃 API", description="로그아웃 API입니다. 로그아웃 시, 기존에 발급된 유효한 토큰을 무효화 처리합니다." )
+    public BaseResponse<?> signOut(
+            @Parameter(name = "accessToken", hidden = true) String accessToken) {
+        return BaseResponse.onSuccess("로그아웃 성공");
+    }
 }
