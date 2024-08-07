@@ -1,6 +1,7 @@
 package com.dev.kioki.domain.auth.controller;
 
-import com.dev.kioki.domain.auth.dto.AuthDTO;
+import com.dev.kioki.domain.auth.dto.AuthDTO.AuthResponse.*;
+import com.dev.kioki.domain.auth.dto.AuthDTO.AuthRequest.*;
 import com.dev.kioki.domain.auth.service.AuthService;
 import com.dev.kioki.global.common.BaseResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,7 +26,7 @@ public class AuthController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "COMMON201", description = "요청 성공 및 리소스 생성됨"),
     })
-    public BaseResponse<AuthDTO.TokenResponse> join(@Valid @RequestBody AuthDTO.JoinRequest request) {
+    public BaseResponse<TokenResponse> join(@Valid @RequestBody JoinRequest request) {
         return BaseResponse.onSuccess(authService.join(request));
     }
 
@@ -34,7 +35,7 @@ public class AuthController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "COMMON200", description = "성공입니다."),
     })
-    public BaseResponse<AuthDTO.TokenResponse> reissueToken(@Parameter(name = "refreshToken", hidden = true) String refreshToken) {
+    public BaseResponse<TokenResponse> reissueToken(@Parameter(name = "refreshToken", hidden = true) String refreshToken) {
         return BaseResponse.onSuccess(authService.reissueToken(refreshToken));
     }
 
@@ -43,5 +44,14 @@ public class AuthController {
     public BaseResponse<?> signOut(
             @Parameter(name = "accessToken", hidden = true) String accessToken) {
         return BaseResponse.onSuccess("로그아웃 성공");
+    }
+
+    @PostMapping("/login")
+    @Operation(summary="로그인 API", description="로그인 성공 시, token을 생성해서 반환합니다." )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "COMMON200", description = "성공입니다.")
+    })
+    public BaseResponse<TokenResponse> localLogin(@RequestBody LoginRequest request) {
+        return BaseResponse.onSuccess(null);
     }
 }

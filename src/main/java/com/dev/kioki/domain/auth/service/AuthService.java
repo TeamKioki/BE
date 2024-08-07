@@ -1,11 +1,11 @@
 package com.dev.kioki.domain.auth.service;
 
-
-import com.dev.kioki.domain.auth.dto.AuthDTO;
+import com.dev.kioki.domain.auth.dto.AuthDTO.AuthResponse.*;
+import com.dev.kioki.domain.auth.dto.AuthDTO.AuthRequest.*;
 
 public interface AuthService {
 
-    AuthDTO.TokenResponse join(AuthDTO.JoinRequest request);
+    TokenResponse join(JoinRequest request);
 
-    AuthDTO.TokenResponse reissueToken(String refreshToken);
+    TokenResponse reissueToken(String refreshToken);
 }

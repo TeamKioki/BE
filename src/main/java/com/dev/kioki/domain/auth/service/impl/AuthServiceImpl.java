@@ -1,6 +1,7 @@
 package com.dev.kioki.domain.auth.service.impl;
 
-import com.dev.kioki.domain.auth.dto.AuthDTO;
+import com.dev.kioki.domain.auth.dto.AuthDTO.AuthResponse.*;
+import com.dev.kioki.domain.auth.dto.AuthDTO.AuthRequest.*;
 import com.dev.kioki.domain.auth.service.AuthService;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -10,12 +11,12 @@ import org.springframework.stereotype.Service;
 public class AuthServiceImpl implements AuthService {
 
     @Override
-    public AuthDTO.TokenResponse join(AuthDTO.JoinRequest request) {
+    public TokenResponse join(JoinRequest request) {
         return null;
     }
 
     @Override
-    public AuthDTO.TokenResponse reissueToken(String reissueToken) {
+    public TokenResponse reissueToken(String reissueToken) {
         return null;
     }
 }
