@@ -28,6 +28,8 @@ public class User extends BaseEntity {
 
     private String phone;
 
+    private String password;
+
     private int age;
 
     private String introduction;
@@ -38,8 +40,7 @@ public class User extends BaseEntity {
 
     private String kioskDifficulty;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<UserProfile> userProfileList = new ArrayList<>();
+    private String imageName;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Review> reviewList = new ArrayList<>();
