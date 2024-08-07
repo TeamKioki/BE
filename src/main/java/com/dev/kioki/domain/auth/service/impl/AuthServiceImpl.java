@@ -13,4 +13,9 @@ public class AuthServiceImpl implements AuthService {
     public AuthDTO.TokenResponse join(AuthDTO.JoinRequest request) {
         return null;
     }
+
+    @Override
+    public AuthDTO.TokenResponse reissueToken(String reissueToken) {
+        return null;
+    }
 }
