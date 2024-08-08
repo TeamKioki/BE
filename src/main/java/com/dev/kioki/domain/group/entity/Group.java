@@ -1,7 +1,6 @@
-package com.dev.kioki.domain.user.group.entity;
+package com.dev.kioki.domain.group.entity;
 
 import com.dev.kioki.domain.user.entity.User;
-import com.dev.kioki.global.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
