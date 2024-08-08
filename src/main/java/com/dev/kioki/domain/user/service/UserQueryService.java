@@ -8,5 +8,8 @@ import java.util.Optional;
 
 public interface UserQueryService {
     Optional<User> findUser(Long id);
+
+    Optional<User> getUserInfo(Long user_id);
     Page<Review> getReviewList(Long user_id, Integer page);
+
 }

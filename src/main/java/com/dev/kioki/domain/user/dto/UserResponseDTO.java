@@ -1,5 +1,8 @@
 package com.dev.kioki.domain.user.dto;
 
+import com.dev.kioki.domain.review.entity.Review;
+import com.dev.kioki.domain.user.entity.Helper;
+import com.dev.kioki.domain.user.entity.enums.FontSize;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,8 +17,22 @@ public class UserResponseDTO {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
+    public static class UserInfoDTO {
+        String name;
+        String phone;
+        String introduction;
+        String imageName;
+        FontSize fontSize;
+        String fontColor;
+        List<Review> reviewList;
+        List<Helper> helperList;
+    }
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class ReviewPreViewDTO {
-        String ownerNickname;
+        String name;
         Double score;
         String content;
         LocalDateTime createdAt;
