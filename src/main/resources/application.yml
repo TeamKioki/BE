@@ -1,9 +1,14 @@
 spring:
+  application:
+    name: moim
   datasource:
+    url: ${DB_URL}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
-    url: ${DB_URL}
+    driver-class-name: ${DB_DRIVER}
   jpa:
+    show-sql: true
+    generate-ddl: true
     properties:
       hibernate:
         show_sql: true
@@ -11,3 +16,14 @@ spring:
         use_sql_comments: true
         hbm2ddl:
           auto: update
+    database: mysql
+  data:
+    redis:
+      host: localhost
+      port: 6379
+sms:
+  api:
+    key:  ${SMS_API_KEY}
+    secret: ${SMS_API_SECRET}
+    sender: ${SMS_SENDER}
+  auth-code-expiration-seconds: 180000

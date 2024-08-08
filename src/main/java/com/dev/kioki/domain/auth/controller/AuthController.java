@@ -11,8 +11,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/auth")
@@ -53,5 +55,23 @@ public class AuthController {
     })
     public BaseResponse<TokenResponse> localLogin(@RequestBody LoginRequest request) {
         return BaseResponse.onSuccess(null);
+    }
+
+    @PostMapping("/sms/send")
+    @Operation(summary="휴대폰 인증 코드 전송 요청 API", description="휴대폰 인증 번호 전송을 요청하는 API입니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "COMMON200", description = "성공입니다.")
+    })
+    public BaseResponse<SmsVerificationCodeResponse> sendCode(@RequestBody SmsSendRequest request) {
+        return BaseResponse.onSuccess(authService.sendCode(request));
+    }
+
+    @PostMapping("/sms/verify")
+    @Operation(summary="휴대폰 인증 코드 일치 여부 확인 요청 API", description="휴대폰 인증 코드 일치 여부를 확인해주는 API입니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "COMMON200", description = "성공입니다.")
+    })
+    public BaseResponse<SmsVerificationResultResponse> verifyCode(@RequestBody SmsVerificationRequest request) {
+        return BaseResponse.onSuccess(authService.verifyCode(request));
     }
 }

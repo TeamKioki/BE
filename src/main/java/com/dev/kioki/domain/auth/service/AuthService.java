@@ -8,4 +8,8 @@ public interface AuthService {
     TokenResponse join(JoinRequest request);
 
     TokenResponse reissueToken(String refreshToken);
+
+    SmsVerificationCodeResponse sendCode(SmsSendRequest request);
+
+    SmsVerificationResultResponse verifyCode(SmsVerificationRequest request);
 }
