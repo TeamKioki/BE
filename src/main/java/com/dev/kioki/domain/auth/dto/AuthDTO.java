@@ -24,6 +24,17 @@ public class AuthDTO {
             @NotBlank String phone;
             @NotBlank String passsword;
         }
+
+        @Getter
+        public static class SmsSendRequest {
+            @NotBlank String phone;
+        }
+
+        @Getter
+        public static class SmsVerificationRequest {
+            @NotBlank String phone;
+            @NotBlank String code;
+        }
     }
 
     public static class AuthResponse {
@@ -35,6 +46,24 @@ public class AuthDTO {
         public static class TokenResponse {
             String accessToken;
             String refreshToken;
+        }
+
+        @Getter
+        @Builder
+        @AllArgsConstructor(access = AccessLevel.PROTECTED)
+        @NoArgsConstructor(access = AccessLevel.PROTECTED)
+        public static class SmsVerificationCodeResponse {
+            String phone;
+            String code;
+        }
+
+        @Getter
+        @Builder
+        @AllArgsConstructor(access = AccessLevel.PROTECTED)
+        @NoArgsConstructor(access = AccessLevel.PROTECTED)
+        public static class SmsVerificationResultResponse {
+            String phone;
+            Boolean isCodeValid;
         }
     }
 }

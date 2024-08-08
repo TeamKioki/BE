@@ -16,6 +16,11 @@ public enum ErrorStatus implements BaseErrorCode {
     _FORBIDDEN(HttpStatus.FORBIDDEN, "COMMON403", "금지된 요청입니다."),
     _INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "COMMON500", "서버 에러, 관리자에게 문의 바랍니다."),
 
+    // 번호 인증
+    SMS_CODE_SEND_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "SMS_001", "인증 번호 전송에 실패했습니다."),
+    SMS_CODE_NOT_FOUND(HttpStatus.NOT_FOUND, "SMS_002", "유저 번호에 해당하는 인증 번호를 찾을 수 없습니다."),
+    INCORRECT_SMS_CODE(HttpStatus.UNAUTHORIZED, "SMS_003", "휴대폰 인증 코드가 일치하지 않습니다."),
+
     // 공통 에러
     PAGE_UNDER_ZERO(HttpStatus.BAD_REQUEST, "COMM_001", "페이지는 0이상이어야 합니다."),
     PAGE_NOT_VALID(HttpStatus.BAD_REQUEST, "PAGE4001", "유효하지 않는 페이지입니다."),
