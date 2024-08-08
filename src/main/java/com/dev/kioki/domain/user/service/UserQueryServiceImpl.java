@@ -25,6 +25,8 @@ public class UserQueryServiceImpl implements UserQueryService {
     }
 
     @Override
+    public Optional<User> getUserInfo(Long user_id) { return findUser(user_id); }
+    @Override
     public Page<Review> getReviewList(Long user_id, Integer page) {
 
         User user = userRepository.findById(user_id).get();
