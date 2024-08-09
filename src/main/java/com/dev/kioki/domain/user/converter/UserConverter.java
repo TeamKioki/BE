@@ -1,5 +1,7 @@
 package com.dev.kioki.domain.user.converter;
 
+import com.dev.kioki.domain.inquire.dto.InquireResponseDTO;
+import com.dev.kioki.domain.inquire.entity.Inquire;
 import com.dev.kioki.domain.user.entity.User;
 import com.dev.kioki.domain.review.entity.Review;
 import com.dev.kioki.domain.user.dto.UserResponseDTO;
@@ -50,6 +52,28 @@ public class UserConverter {
                 .totalElements(reviewList.getTotalElements())
                 .listSize(reviewPreViewDTOList.size())
                 .reviewList(reviewPreViewDTOList)
+                .build();
+    }
+
+    public static UserResponseDTO.InquirePreViewDTO inquirePreViewDTO(Inquire inquire){
+        return UserResponseDTO.InquirePreViewDTO.builder()
+                .title(inquire.getTitle())
+                .createdAt(inquire.getCreatedAt())
+                .build();
+    }
+
+    public static UserResponseDTO.InquirePreViewListDTO inquirePreViewListDTO(Page<Inquire> inquireList) {
+
+        List<UserResponseDTO.InquirePreViewDTO> inquirePreViewDTOList = inquireList.stream()
+                .map(UserConverter::inquirePreViewDTO).collect(Collectors.toList());
+
+        return UserResponseDTO.InquirePreViewListDTO.builder()
+                .isLast(inquireList.isLast())
+                .isFirst(inquireList.isFirst())
+                .totalPage(inquireList.getTotalPages())
+                .totalElements(inquireList.getTotalElements())
+                .listSize(inquirePreViewDTOList.size())
+                .inquireList(inquirePreViewDTOList)
                 .build();
     }
 }

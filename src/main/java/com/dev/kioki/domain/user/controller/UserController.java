@@ -1,5 +1,6 @@
 package com.dev.kioki.domain.user.controller;
 
+import com.dev.kioki.domain.inquire.entity.Inquire;
 import com.dev.kioki.domain.review.entity.Review;
 import com.dev.kioki.domain.user.converter.UserConverter;
 import com.dev.kioki.domain.user.dto.UserResponseDTO;
@@ -53,7 +54,7 @@ public class UserController {
 
 
     @GetMapping("/{user_id}/reviews")
-    @Operation(summary = "리뷰 목록 조회 API", description = "마이페이지 리뷰 목록을 조회하는 API입니다.")
+    @Operation(summary = "리뷰 목록 조회 API", description = "나의 리뷰 목록을 조회하는 API입니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH003", description = "access 토큰을 주세요!",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
@@ -68,4 +69,22 @@ public class UserController {
         Page<Review> reviews = userQueryService.getReviewList(user_id, page);
         return BaseResponse.onSuccess(UserConverter.reviewPreViewListDTO(reviews));
     }
+
+    @GetMapping("/{user_id}/inquires")
+    @Operation(summary = "문의 목록 조회 API", description = "나의 문의 목록을 조회하는 API입니다.")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH003", description = "access 토큰을 주세요!",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH004", description = "access 토큰 만료",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH006", description = "access 토큰 모양이 이상함",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+    })
+    @Parameters({
+            @Parameter(name = "user_id", description = "유저의 아이디입니다!"),
+            @Parameter(name = "page", description = "페이지 번호, 1번이 1 페이지 입니다."),
+    })
+    public BaseResponse<UserResponseDTO.InquirePreViewListDTO> getInquireList(@PathVariable(name = "user_id") Long user_id, @ExistPage @RequestParam(name = "page") Integer page){
+        Page<Inquire> inquires = userQueryService.getInquireList(user_id, page);
+        return BaseResponse.onSuccess(UserConverter.inquirePreViewListDTO(inquires));
+    }
+
 }
