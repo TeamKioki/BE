@@ -26,8 +26,9 @@ public enum ErrorStatus implements BaseErrorCode {
     PAGE_NOT_VALID(HttpStatus.BAD_REQUEST, "PAGE401", "유효하지 않는 페이지입니다."),
 
     // 유저 관련 에러
-    USER_NOT_FOUND(HttpStatus.BAD_REQUEST, "USER401", "사용자가 없습니다."),
-    NICKNAME_NOT_EXIST(HttpStatus.BAD_REQUEST, "MEMBER402", "닉네임은 필수 입니다."),
+    USER_NOT_FOUND(HttpStatus.BAD_REQUEST, "USER_401", "사용자가 없습니다."),
+    NICKNAME_NOT_EXIST(HttpStatus.BAD_REQUEST, "USER_402", "닉네임은 필수 입니다."),
+    USER_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "USER_403", "이미 가입된 번호입니다."),
 
     // Auth 관련 에러
     AUTH_EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH_001", "토큰이 만료되었습니다."),
