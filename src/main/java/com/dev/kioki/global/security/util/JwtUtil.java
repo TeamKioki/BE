@@ -66,6 +66,14 @@ public class JwtUtil {
                 .compact();
     }
 
+    public String getPhone(String token) {
+        return getClaims(token).getBody().get("phone", String.class);
+    }
+
+    public Long getExpiration(String token) {
+        return getClaims(token).getBody().getExpiration().getTime();
+    }
+
     public boolean isTokenValid(String token) throws AuthException {
         try {
             Jws<Claims> claims = getClaims(token);
