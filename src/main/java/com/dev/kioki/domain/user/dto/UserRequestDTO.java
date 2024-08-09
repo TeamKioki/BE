@@ -17,4 +17,16 @@ public class UserRequestDTO {
         private String content;
 
     }
+
+    @Getter
+    public static class InquireDto {
+        @NotBlank
+        Long user_id;
+        @NotNull
+        private String title;
+        @NotNull
+        private String body;
+        @NotNull
+        private String imageUrl;
+    }
 }
