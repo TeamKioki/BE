@@ -53,7 +53,7 @@ public class AuthController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "COMMON200", description = "성공입니다.")
     })
-    public BaseResponse<TokenResponse> localLogin(@RequestBody LoginRequest request) {
+    public BaseResponse<TokenResponse> localLogin(@RequestBody SmsVerificationRequest request) {
         return BaseResponse.onSuccess(null);
     }
 

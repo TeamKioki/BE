@@ -17,4 +17,11 @@ public class AuthConverter {
                 .isCodeValid(isCodeValid)
                 .build();
     }
+
+    public static TokenResponse toTokenResponse(String accessToken, String refreshToken) {
+        return TokenResponse.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .build();
+    }
 }

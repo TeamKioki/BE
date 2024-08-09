@@ -1,7 +1,6 @@
 package com.dev.kioki.global.security.util;
 
 import com.dev.kioki.global.error.handler.AuthException;
-import com.dev.kioki.global.security.principal.PrincipalDetails;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
@@ -46,22 +45,21 @@ public class JwtUtil {
         this.refreshTokenValiditySec = refreshTokenValiditySec;
     }
 
-    public String createAccessToken(PrincipalDetails principalDetails) {
-        return createToken(principalDetails, accessTokenValiditySec);
+    public String createAccessToken(String userId, String phone) {
+        return createToken(userId, phone, accessTokenValiditySec);
     }
 
-    public String createRefreshToken(PrincipalDetails principalDetails) {
-        return createToken(principalDetails, refreshTokenValiditySec);
+    public String createRefreshToken(String userId, String phone) {
+        return createToken(userId, phone, refreshTokenValiditySec);
     }
 
-    private String createToken(
-            PrincipalDetails principalDetails, Long validitySeconds) {
+    private String createToken(String userId, String phone, Long validitySeconds) {
         Instant issuedAt = Instant.now();
         Instant expirationTime = issuedAt.plusSeconds(validitySeconds);
 
         return Jwts.builder()
-                .setSubject(String.valueOf(principalDetails.getUserId()))
-                .claim("phone", principalDetails.getUsername())
+                .setSubject(userId)
+                .claim("phone", phone)
                 .setIssuedAt(Date.from(issuedAt))
                 .setExpiration(Date.from(expirationTime))
                 .signWith(secretKey, SignatureAlgorithm.HS256)
