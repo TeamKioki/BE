@@ -1,6 +1,7 @@
 package com.dev.kioki.global.security.util;
 
 import com.dev.kioki.global.error.handler.AuthException;
+import com.dev.kioki.global.security.principal.PrincipalDetails;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
@@ -45,21 +46,22 @@ public class JwtUtil {
         this.refreshTokenValiditySec = refreshTokenValiditySec;
     }
 
-    public String createAccessToken(String userId, String phone) {
-        return createToken(userId, phone, accessTokenValiditySec);
+    public String createAccessToken(String userId, String phone, String role) {
+        return createToken(userId, phone, role, accessTokenValiditySec);
     }
 
-    public String createRefreshToken(String userId, String phone) {
-        return createToken(userId, phone, refreshTokenValiditySec);
+    public String createRefreshToken(String userId, String phone, String role) {
+        return createToken(userId, phone, role, refreshTokenValiditySec);
     }
 
-    private String createToken(String userId, String phone, Long validitySeconds) {
+    private String createToken(String userId, String phone, String role, Long validitySeconds) {
         Instant issuedAt = Instant.now();
         Instant expirationTime = issuedAt.plusSeconds(validitySeconds);
 
         return Jwts.builder()
                 .setSubject(userId)
                 .claim("phone", phone)
+                .claim("role", role)
                 .setIssuedAt(Date.from(issuedAt))
                 .setExpiration(Date.from(expirationTime))
                 .signWith(secretKey, SignatureAlgorithm.HS256)
@@ -68,6 +70,16 @@ public class JwtUtil {
 
     public String getPhone(String token) {
         return getClaims(token).getBody().get("phone", String.class);
+    }
+
+    public String getUserId(String token) {
+        return getClaims(token).getBody().getSubject();
+    }
+
+    public String getRole(String token) {return getClaims(token).getBody().get("role", String.class);}
+
+    private Jws<Claims> getClaims(String token) {
+        return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token);
     }
 
     public Long getExpiration(String token) {
@@ -89,10 +101,6 @@ public class JwtUtil {
             log.error("유저 인증 실패 : {}", e.getMessage());
             throw new AuthException(AUTH_INVALID_TOKEN);
         }
-    }
-
-    private Jws<Claims> getClaims(String token) {
-        return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token);
     }
 
     public String resolveToken(HttpServletRequest request) {

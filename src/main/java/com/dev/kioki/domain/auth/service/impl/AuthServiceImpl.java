@@ -6,20 +6,24 @@ import com.dev.kioki.domain.auth.dto.AuthDTO.AuthRequest.*;
 import com.dev.kioki.domain.auth.service.AuthService;
 import com.dev.kioki.domain.user.entity.User;
 import com.dev.kioki.domain.user.repository.UserRepository;
+import com.dev.kioki.global.error.handler.AuthException;
 import com.dev.kioki.global.error.handler.SmsException;
 import com.dev.kioki.global.redis.RedisUtil;
 import com.dev.kioki.global.security.util.JwtUtil;
 import com.dev.kioki.global.sms.SmsUtil;
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import static com.dev.kioki.global.common.code.status.ErrorStatus.*;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class AuthServiceImpl implements AuthService {
 
     private final SmsUtil smsUtil;
@@ -30,12 +34,13 @@ public class AuthServiceImpl implements AuthService {
     private Long authCodeExpirationSeconds;
 
     @Override
+    @Transactional
     public TokenResponse join(JoinRequest request) {
         User user = AuthConverter.toUser(request);
         userRepository.save(user);
 
-        String accessToken = jwtUtil.createAccessToken(user.getId().toString(), user.getPhone());
-        String refreshToken = jwtUtil.createRefreshToken(user.getId().toString(), user.getPhone());
+        String accessToken = jwtUtil.createAccessToken(user.getId().toString(), user.getPhone(), user.getUserRole().toString());
+        String refreshToken = jwtUtil.createRefreshToken(user.getId().toString(), user.getPhone(), user.getUserRole().toString());
 
         redisUtil.setValue(user.getId().toString(), refreshToken, jwtUtil.getRefreshTokenValiditySec());
 
@@ -43,8 +48,30 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    @Transactional
     public TokenResponse reissueToken(String refreshToken) {
-        return null;
+        try {
+            if (!jwtUtil.isTokenValid(refreshToken)) {
+                throw new AuthException(AUTH_INVALID_TOKEN);
+            }
+
+            String userId = jwtUtil.getUserId(refreshToken);
+            String phone = jwtUtil.getPhone(refreshToken);
+            String role = jwtUtil.getRole(refreshToken);
+
+            redisUtil.deleteValue(userId);
+
+            String newAccess = jwtUtil.createAccessToken(userId, phone, role);
+            String newRefresh = jwtUtil.createRefreshToken(userId, phone, role);
+
+            redisUtil.setValue(userId, newRefresh, jwtUtil.getRefreshTokenValiditySec());
+
+            return AuthConverter.toTokenResponse(newAccess, newRefresh);
+        } catch (IllegalArgumentException e) {
+            throw new AuthException(AUTH_INVALID_TOKEN);
+        } catch (ExpiredJwtException e) {
+            throw new AuthException(AUTH_EXPIRED_TOKEN);
+        }
     }
 
     @Override

@@ -43,7 +43,8 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         return new CustomAuthenticationToken(
                 authentication.getPrincipal().toString(),
                 authentication.getCredentials().toString(),
-                user.getId().toString());
+                user.getId().toString(),
+                user.getUserRole().toString());
     }
 
     @Override
