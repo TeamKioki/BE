@@ -97,7 +97,7 @@ public class SecurityConfig {
         );
 
         http.addFilterAt(customLoginFilter, UsernamePasswordAuthenticationFilter.class);
-        http.addFilterBefore(new JwtFilter(jwtUtil, allowUrls), CustomLoginFilter.class);
+        http.addFilterBefore(new JwtFilter(jwtUtil, allowUrls, redisUtil), CustomLoginFilter.class);
         http.addFilterBefore(new JwtExceptionFilter(allowUrls), JwtFilter.class);
         http.addFilterAfter(new LogoutFilter((request, response, authentication)
                         -> HttpResponseUtil.setSuccessResponse(response, SuccessStatus._OK, "로그아웃 성공"),
