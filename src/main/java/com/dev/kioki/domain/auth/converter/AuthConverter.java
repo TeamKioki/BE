@@ -1,6 +1,9 @@
 package com.dev.kioki.domain.auth.converter;
 
 import com.dev.kioki.domain.auth.dto.AuthDTO.AuthResponse.*;
+import com.dev.kioki.domain.auth.dto.AuthDTO.AuthRequest.*;
+import com.dev.kioki.domain.user.entity.User;
+import com.dev.kioki.domain.user.entity.enums.UserRole;
 
 public class AuthConverter {
 
@@ -22,6 +25,18 @@ public class AuthConverter {
         return TokenResponse.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
+                .build();
+    }
+
+    public static User toUser(JoinRequest request) {
+        return User.builder()
+                .name(request.getName())
+                .phone(request.getPhone())
+                .birthday(request.getBirthday())
+                .introduction(request.getIntroduction())
+                .kioskDifficulty(request.getKioskDifficulty())
+                .imageName(request.getImageName())
+                .userRole(UserRole.ROLE_USER)
                 .build();
     }
 }

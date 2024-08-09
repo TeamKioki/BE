@@ -10,6 +10,7 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,9 +31,7 @@ public class User extends BaseEntity {
 
     private String phone;
 
-    private String password;
-
-    private int age;
+    private LocalDate birthday;
 
     private String introduction;
 

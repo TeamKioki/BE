@@ -1,8 +1,11 @@
 package com.dev.kioki.domain.auth.dto;
 
+import com.dev.kioki.global.validation.annotation.PhoneDuplication;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+
+import java.time.LocalDate;
 
 public class AuthDTO {
 
@@ -11,10 +14,9 @@ public class AuthDTO {
         @Getter
         public static class JoinRequest {
             @NotBlank String name;
-            @NotBlank String phone;
-            @NotBlank String password;
+            @PhoneDuplication @NotBlank String phone;
             String imageName;
-            @NotNull int age;
+            @NotNull LocalDate birthday;
             String introduction;
             @NotBlank String kioskDifficulty;
         }

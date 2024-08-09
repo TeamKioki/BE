@@ -4,8 +4,11 @@ import com.dev.kioki.domain.auth.converter.AuthConverter;
 import com.dev.kioki.domain.auth.dto.AuthDTO.AuthResponse.*;
 import com.dev.kioki.domain.auth.dto.AuthDTO.AuthRequest.*;
 import com.dev.kioki.domain.auth.service.AuthService;
+import com.dev.kioki.domain.user.entity.User;
+import com.dev.kioki.domain.user.repository.UserRepository;
 import com.dev.kioki.global.error.handler.SmsException;
 import com.dev.kioki.global.redis.RedisUtil;
+import com.dev.kioki.global.security.util.JwtUtil;
 import com.dev.kioki.global.sms.SmsUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,12 +24,22 @@ public class AuthServiceImpl implements AuthService {
 
     private final SmsUtil smsUtil;
     private final RedisUtil redisUtil;
+    private final JwtUtil jwtUtil;
+    private final UserRepository userRepository;
     @Value("${sms.auth-code-expiration-seconds}")
     private Long authCodeExpirationSeconds;
 
     @Override
     public TokenResponse join(JoinRequest request) {
-        return null;
+        User user = AuthConverter.toUser(request);
+        userRepository.save(user);
+
+        String accessToken = jwtUtil.createAccessToken(user.getId().toString(), user.getPhone());
+        String refreshToken = jwtUtil.createRefreshToken(user.getId().toString(), user.getPhone());
+
+        redisUtil.setValue(user.getId().toString(), refreshToken, jwtUtil.getRefreshTokenValiditySec());
+
+        return AuthConverter.toTokenResponse(accessToken, refreshToken);
     }
 
     @Override
