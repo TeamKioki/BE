@@ -20,12 +20,6 @@ public class AuthDTO {
         }
 
         @Getter
-        public static class LoginRequest {
-            @NotBlank String phone;
-            @NotBlank String passsword;
-        }
-
-        @Getter
         public static class SmsSendRequest {
             @NotBlank String phone;
         }

@@ -2,9 +2,11 @@ package com.dev.kioki.domain.user.entity;
 
 import com.dev.kioki.domain.user.entity.enums.FontSize;
 import com.dev.kioki.domain.review.entity.Review;
+import com.dev.kioki.domain.user.entity.enums.UserRole;
 import com.dev.kioki.global.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -41,6 +43,10 @@ public class User extends BaseEntity {
     private String kioskDifficulty;
 
     private String imageName;
+
+    @Enumerated(EnumType.STRING)
+    @ColumnDefault("'ROLE_USER'")
+    private UserRole userRole;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Review> reviewList = new ArrayList<>();

@@ -23,12 +23,21 @@ public enum ErrorStatus implements BaseErrorCode {
 
     // 공통 에러
     PAGE_UNDER_ZERO(HttpStatus.BAD_REQUEST, "COMM_001", "페이지는 0이상이어야 합니다."),
-    PAGE_NOT_VALID(HttpStatus.BAD_REQUEST, "PAGE4001", "유효하지 않는 페이지입니다."),
+    PAGE_NOT_VALID(HttpStatus.BAD_REQUEST, "PAGE401", "유효하지 않는 페이지입니다."),
 
-    // 멤버 관려 에러
-    USER_NOT_FOUND(HttpStatus.BAD_REQUEST, "USER4001", "사용자가 없습니다."),
-    NICKNAME_NOT_EXIST(HttpStatus.BAD_REQUEST, "MEMBER4002", "닉네임은 필수 입니다.");
+    // 유저 관련 에러
+    USER_NOT_FOUND(HttpStatus.BAD_REQUEST, "USER401", "사용자가 없습니다."),
+    NICKNAME_NOT_EXIST(HttpStatus.BAD_REQUEST, "MEMBER402", "닉네임은 필수 입니다."),
 
+    // Auth 관련 에러
+    AUTH_EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH_001", "토큰이 만료되었습니다."),
+    AUTH_INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH_002", "토큰이 유효하지 않습니다."),
+    USER_PHONE_NOT_FOUND(HttpStatus.NOT_FOUND, "Auth_003", "해당하는 휴대폰 번호를 찾을 수 없습니다. 회원가입을 진행해주세요."),
+
+    // HTTP 요청 관련 에러
+    INVALID_REQUEST_BODY(HttpStatus.BAD_REQUEST, "AUTH_026", "잘못된 요청 본문입니다."),
+    INVALID_REQUEST_HEADER(HttpStatus.BAD_REQUEST, "AUTH_027", "잘못된 요청 헤더입니다.")
+    ;
 
     private final HttpStatus httpStatus;
     private final String code;
