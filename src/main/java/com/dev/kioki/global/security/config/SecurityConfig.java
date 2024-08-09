@@ -1,6 +1,7 @@
 package com.dev.kioki.global.security.config;
 
 import com.dev.kioki.global.config.WebConfig;
+import com.dev.kioki.global.security.filter.JwtExceptionFilter;
 import com.dev.kioki.global.security.filter.JwtFilter;
 import com.dev.kioki.global.security.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -51,6 +52,7 @@ public class SecurityConfig {
                 .anyRequest().permitAll());
 
         http.addFilterAfter(new JwtFilter(jwtUtil, allowUrls), CorsFilter.class);
+        http.addFilterBefore(new JwtExceptionFilter(allowUrls), JwtFilter.class);
 
         return http.build();
     }
