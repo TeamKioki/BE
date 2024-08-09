@@ -1,6 +1,7 @@
 package com.dev.kioki.domain.group.controller;
 
 import com.dev.kioki.domain.group.converter.GroupMemberConverter;
+import com.dev.kioki.domain.group.dto.GroupRequestDTO;
 import com.dev.kioki.domain.group.dto.GroupResponseDTO;
 import com.dev.kioki.domain.group.entity.GroupMember;
 import com.dev.kioki.domain.group.service.GroupMemberService;
@@ -12,12 +13,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static com.dev.kioki.global.common.code.status.SuccessStatus._CREATED;
 
 @RestController
 @RequestMapping("/groups")
@@ -52,5 +52,19 @@ public class GroupMemberController {
         Page<GroupMember> members = groupMemberService.getGroupMembersList(groupId, page);
 
         return BaseResponse.onSuccess(GroupMemberConverter.toGroupMemberListPageDTO(members));
+    }
+
+    @Operation(summary = "그룹 멤버 추가", description = "유저 아이디 필요합니다.")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON201",description = "OK, 생성 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER4001", description = "유저를 찾을 수 없습니다!",content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+    })
+    @PostMapping("/members")
+    public BaseResponse<GroupResponseDTO.GroupMemberDetailsDTO> addMemberToGroup(
+            //@PathVariable Long groupId,
+            @RequestBody GroupRequestDTO.GroupMemberRequest request) {
+        Long groupId = 1L;
+        GroupMember groupMember = groupMemberService.addMemberToGroup(groupId, request.getUserId());
+        return BaseResponse.of(_CREATED, GroupMemberConverter.toGroupMemberDetailsDTO(groupMember));
     }
 }

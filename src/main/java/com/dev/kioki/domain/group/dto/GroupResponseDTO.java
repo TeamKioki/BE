@@ -1,5 +1,6 @@
 package com.dev.kioki.domain.group.dto;
 
+import com.dev.kioki.domain.user.entity.enums.FontSize;
 import lombok.*;
 
 import java.util.List;
@@ -30,5 +31,21 @@ public class GroupResponseDTO {
         Long totalElements;
         Boolean isFirst;
         Boolean isLast;
+    }
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Getter
+    public static class GroupMemberDetailsDTO {
+        private Long memberId;
+        private Long userId;
+        private String profilePictureUrl;
+        private String noteTitle;
+        private String noteText;
+        private String color;
+        private FontSize fontSize;
+        private String nickname;
     }
 }

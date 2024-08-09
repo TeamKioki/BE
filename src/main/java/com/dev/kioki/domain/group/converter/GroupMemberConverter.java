@@ -38,4 +38,17 @@ public class GroupMemberConverter {
                 .noteText(member.getNoteText())
                 .build();
     }
+
+    public static GroupResponseDTO.GroupMemberDetailsDTO toGroupMemberDetailsDTO(GroupMember member){
+        return GroupResponseDTO.GroupMemberDetailsDTO.builder()
+                .memberId(member.getGroupMemberId())
+                .userId(member.getMemberUserId())
+                .nickname(member.getNickname())
+                .profilePictureUrl(member.getProfilePictureUrl())
+                .noteTitle(member.getNoteTitle())
+                .noteText(member.getNoteText())
+                .color(member.getColor())
+                .fontSize(member.getFontSize())
+                .build();
+    }
 }
