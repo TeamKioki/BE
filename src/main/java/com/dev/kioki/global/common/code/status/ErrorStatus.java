@@ -36,7 +36,8 @@ public enum ErrorStatus implements BaseErrorCode {
     USER_PHONE_NOT_FOUND(HttpStatus.NOT_FOUND, "Auth_003", "해당하는 휴대폰 번호를 찾을 수 없습니다. 회원가입을 진행해주세요."),
     LOGOUT_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH_004", "로그아웃된 access 토큰 입니다."),
     INVALID_REQUEST_BODY(HttpStatus.BAD_REQUEST, "AUTH_005", "잘못된 요청 본문입니다."),
-    INVALID_REQUEST_HEADER(HttpStatus.BAD_REQUEST, "AUTH_006", "잘못된 요청 헤더입니다.")
+    INVALID_REQUEST_HEADER(HttpStatus.BAD_REQUEST, "AUTH_006", "잘못된 요청 헤더입니다."),
+    AUTHORIZATION_HEADER_MISSING(HttpStatus.UNAUTHORIZED, "AUTH_015", "Authorization 헤더가 비어있습니다.")
     ;
 
     private final HttpStatus httpStatus;

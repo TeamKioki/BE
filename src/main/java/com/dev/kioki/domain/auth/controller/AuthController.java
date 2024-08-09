@@ -4,6 +4,7 @@ import com.dev.kioki.domain.auth.dto.AuthDTO.AuthResponse.*;
 import com.dev.kioki.domain.auth.dto.AuthDTO.AuthRequest.*;
 import com.dev.kioki.domain.auth.service.AuthService;
 import com.dev.kioki.global.common.BaseResponse;
+import com.dev.kioki.global.security.annotation.ExtractToken;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -37,7 +38,7 @@ public class AuthController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "COMMON200", description = "성공입니다."),
     })
-    public BaseResponse<TokenResponse> reissueToken(@Parameter(name = "refreshToken", hidden = true) String refreshToken) {
+    public BaseResponse<TokenResponse> reissueToken(@ExtractToken @Parameter(name = "refreshToken", hidden = true) String refreshToken) {
         return BaseResponse.onSuccess(authService.reissueToken(refreshToken));
     }
 

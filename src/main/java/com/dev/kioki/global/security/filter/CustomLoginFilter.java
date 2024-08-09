@@ -33,7 +33,6 @@ public class CustomLoginFilter extends AbstractAuthenticationProcessingFilter {
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
         this.redisUtil = redisUtil;
-
     }
 
     @Override
@@ -43,7 +42,8 @@ public class CustomLoginFilter extends AbstractAuthenticationProcessingFilter {
 
         SmsVerificationRequest smsVerificationRequest = HttpRequestUtil.readBody(request, SmsVerificationRequest.class);
 
-        return authenticationManager.authenticate(new CustomAuthenticationToken(smsVerificationRequest.getPhone(), smsVerificationRequest.getCode(), null));
+        return authenticationManager.authenticate(new CustomAuthenticationToken(
+                smsVerificationRequest.getPhone(), smsVerificationRequest.getCode(), null, null));
     }
 
     @Override
@@ -53,8 +53,8 @@ public class CustomLoginFilter extends AbstractAuthenticationProcessingFilter {
             @NonNull FilterChain chain,
             @NonNull Authentication authResult) throws IOException, ServletException {
 
-        String accessToken = jwtUtil.createAccessToken(authResult.getName(), authResult.getPrincipal().toString());
-        String refreshToken = jwtUtil.createRefreshToken(authResult.getName(), authResult.getPrincipal().toString());
+        String accessToken = jwtUtil.createAccessToken(authResult.getName(), authResult.getPrincipal().toString(), ((CustomAuthenticationToken) authResult).getRole());
+        String refreshToken = jwtUtil.createRefreshToken(authResult.getName(), authResult.getPrincipal().toString(), ((CustomAuthenticationToken) authResult).getRole());
 
         redisUtil.setValue(authResult.getName(), refreshToken, jwtUtil.getRefreshTokenValiditySec());
 
