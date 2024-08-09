@@ -1,12 +1,15 @@
 package com.dev.kioki.global.security.config;
 
 import com.dev.kioki.domain.user.repository.UserRepository;
+import com.dev.kioki.global.common.code.status.SuccessStatus;
 import com.dev.kioki.global.config.WebConfig;
 import com.dev.kioki.global.redis.RedisUtil;
 import com.dev.kioki.global.security.filter.CustomLoginFilter;
+import com.dev.kioki.global.security.filter.CustomLogoutHandler;
 import com.dev.kioki.global.security.filter.JwtExceptionFilter;
 import com.dev.kioki.global.security.filter.JwtFilter;
 import com.dev.kioki.global.security.util.CustomAuthenticationProvider;
+import com.dev.kioki.global.security.util.HttpResponseUtil;
 import com.dev.kioki.global.security.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -23,6 +26,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 
 @Configuration
 @RequiredArgsConstructor
@@ -83,9 +87,21 @@ public class SecurityConfig {
         CustomLoginFilter customLoginFilter = new CustomLoginFilter(
                 authenticationManager(), jwtUtil, redisUtil);
 
+        http.logout(logout -> logout
+                .logoutUrl("/api/v1/auth/logout")
+                .addLogoutHandler(new CustomLogoutHandler(jwtUtil, redisUtil))
+                .logoutSuccessHandler((request, response, authentication) -> HttpResponseUtil.setSuccessResponse(
+                        response,
+                        SuccessStatus._OK,
+                        "로그아웃 성공"))
+        );
+
         http.addFilterAt(customLoginFilter, UsernamePasswordAuthenticationFilter.class);
-        http.addFilterBefore(new JwtFilter(jwtUtil, allowUrls), CustomLoginFilter.class);
+        http.addFilterBefore(new JwtFilter(jwtUtil, allowUrls, redisUtil), CustomLoginFilter.class);
         http.addFilterBefore(new JwtExceptionFilter(allowUrls), JwtFilter.class);
+        http.addFilterAfter(new LogoutFilter((request, response, authentication)
+                        -> HttpResponseUtil.setSuccessResponse(response, SuccessStatus._OK, "로그아웃 성공"),
+                        new CustomLogoutHandler(jwtUtil, redisUtil)), JwtFilter.class);
 
         return http.build();
     }

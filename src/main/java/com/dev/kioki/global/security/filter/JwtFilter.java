@@ -1,6 +1,7 @@
 package com.dev.kioki.global.security.filter;
 
 import com.dev.kioki.global.error.handler.AuthException;
+import com.dev.kioki.global.redis.RedisUtil;
 import com.dev.kioki.global.security.util.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -17,6 +18,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 import static com.dev.kioki.global.common.code.status.ErrorStatus.AUTH_INVALID_TOKEN;
+import static com.dev.kioki.global.common.code.status.ErrorStatus.LOGOUT_ACCESS_TOKEN;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -24,6 +26,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
     private final String[] excludePath;
+    private final RedisUtil redisUtil;
 
     @Override
     public void doFilterInternal(
@@ -37,6 +40,11 @@ public class JwtFilter extends OncePerRequestFilter {
         if (accessToken == null) {
             filterChain.doFilter(request, response);
             return;
+        }
+
+        if (redisUtil.getValue(accessToken) != null) {
+            filterChain.doFilter(request, response);
+            throw new AuthException(LOGOUT_ACCESS_TOKEN);
         }
 
         if(jwtUtil.isTokenValid(accessToken)) {

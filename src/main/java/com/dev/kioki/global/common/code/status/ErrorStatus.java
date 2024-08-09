@@ -34,10 +34,9 @@ public enum ErrorStatus implements BaseErrorCode {
     AUTH_EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH_001", "토큰이 만료되었습니다."),
     AUTH_INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH_002", "토큰이 유효하지 않습니다."),
     USER_PHONE_NOT_FOUND(HttpStatus.NOT_FOUND, "Auth_003", "해당하는 휴대폰 번호를 찾을 수 없습니다. 회원가입을 진행해주세요."),
-
-    // HTTP 요청 관련 에러
-    INVALID_REQUEST_BODY(HttpStatus.BAD_REQUEST, "AUTH_026", "잘못된 요청 본문입니다."),
-    INVALID_REQUEST_HEADER(HttpStatus.BAD_REQUEST, "AUTH_027", "잘못된 요청 헤더입니다.")
+    LOGOUT_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH_004", "로그아웃된 access 토큰 입니다."),
+    INVALID_REQUEST_BODY(HttpStatus.BAD_REQUEST, "AUTH_005", "잘못된 요청 본문입니다."),
+    INVALID_REQUEST_HEADER(HttpStatus.BAD_REQUEST, "AUTH_006", "잘못된 요청 헤더입니다.")
     ;
 
     private final HttpStatus httpStatus;
