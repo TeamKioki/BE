@@ -18,6 +18,8 @@ public record PrincipalDetails(User user) implements UserDetails {
         return collections;
     }
 
+    public Long getUserId() {return user.getId();}
+
     @Override
     public String getUsername() {
         return user.getPhone();
