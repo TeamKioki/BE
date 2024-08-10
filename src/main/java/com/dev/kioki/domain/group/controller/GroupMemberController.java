@@ -102,4 +102,18 @@ public class GroupMemberController {
         GroupMember updatedGroupMember = groupMemberService.updateGroupMember(groupId, memberId, memberInfo);
         return BaseResponse.onSuccess(GroupMemberConverter.toGroupMemberDetailsDTO(updatedGroupMember));
     }
+
+    @Operation(summary = "그룹 멤버 상세 조회", description = "멤버 아이디 필요합니다. 멤버 아이디는 유저아이디와 별도입니다.")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER4001", description = "유저를 찾을 수 없습니다!",content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+    })
+    @GetMapping("/members/{memberId}/details")
+    public BaseResponse<GroupResponseDTO.GroupMemberDetailsDTO> getGroupMemberDetails(
+            //@PathVariable Long groupId,
+            @PathVariable Long memberId) {
+        Long groupId = 1L;
+        GroupMember groupMemberDetails = groupMemberService.getGroupMemberDetails(groupId, memberId);
+        return BaseResponse.onSuccess(GroupMemberConverter.toGroupMemberDetailsDTO(groupMemberDetails));
+    }
 }

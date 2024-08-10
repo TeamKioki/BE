@@ -142,4 +142,15 @@ public class GroupMemberService {
         return groupMemberRepository.save(groupMember);
     }
 
+
+    public GroupMember getGroupMemberDetails(Long groupId, Long memberId) {
+        GroupMember groupMember = groupMemberRepository.findByGroup_GroupIdAndGroupMemberId(groupId, memberId);
+
+        if (groupMember == null) {
+            throw new GroupHandler(ErrorStatus.MEMBER_NOT_FOUND);
+        }
+
+        return groupMember;
+    }
+
 }
