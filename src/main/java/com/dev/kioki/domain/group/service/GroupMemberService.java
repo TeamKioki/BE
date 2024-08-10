@@ -153,4 +153,10 @@ public class GroupMemberService {
         return groupMember;
     }
 
+    public List<GroupMember> searchGroupMembersByNickname(Long groupId, String nickname) {
+        List<GroupMember> members = groupMemberRepository.findByGroupIdAndNicknameContaining(groupId, nickname);
+
+        return members;
+    }
+
 }
