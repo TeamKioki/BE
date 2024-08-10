@@ -13,8 +13,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class GroupMemberService {
@@ -27,6 +33,8 @@ public class GroupMemberService {
 
     @Autowired
     private UserRepository userRepository;
+
+    private String uploadDir = "";
 
     public List<GroupMember> getGroupMembers(Long groupId) {
         List<GroupMember> groupMembers = groupMemberRepository.findByGroup_GroupId(groupId);
@@ -64,6 +72,44 @@ public class GroupMemberService {
                 .nickname(nickname)
                 .build();
 
+        return groupMemberRepository.save(groupMember);
+    }
+
+    public GroupMember updateProfilePicture(Long groupId, Long memberId, MultipartFile profilePicture) {
+        GroupMember groupMember = groupMemberRepository.findByGroup_GroupIdAndGroupMemberId(groupId, memberId);
+
+
+        if (groupMember == null) {
+            throw new GroupHandler(ErrorStatus.MEMBER_NOT_FOUND);
+        }
+
+        if (profilePicture != null && !profilePicture.isEmpty()) {
+            try {
+                // 기존 파일 삭제 (존재하는 경우)
+                String existingFileName = groupMember.getProfilePictureUrl();
+                if (existingFileName != null) {
+                    Path existingFilePath = Paths.get(uploadDir, existingFileName.substring(existingFileName.lastIndexOf('/') + 1));
+                    Files.deleteIfExists(existingFilePath);
+                }
+
+                // 새로운 파일 이름 생성 (UUID 사용)
+                String originalFilename = profilePicture.getOriginalFilename();
+                String extension = originalFilename.substring(originalFilename.lastIndexOf('.'));
+                String newFilename = UUID.randomUUID() + extension;
+
+                // 새로운 파일 저장
+                Path path = Paths.get(uploadDir, newFilename);
+                Files.createDirectories(path.getParent());
+                Files.write(path, profilePicture.getBytes());
+
+                // 파일 URL 생성
+                String fileUrl = "/files/" + newFilename;
+                groupMember.setProfilePictureUrl(fileUrl);
+
+            } catch (IOException e) {
+                throw new RuntimeException("파일 저장 또는 삭제에 실패했습니다.", e);
+            }
+        }
         return groupMemberRepository.save(groupMember);
     }
 }
