@@ -116,4 +116,19 @@ public class GroupMemberController {
         GroupMember groupMemberDetails = groupMemberService.getGroupMemberDetails(groupId, memberId);
         return BaseResponse.onSuccess(GroupMemberConverter.toGroupMemberDetailsDTO(groupMemberDetails));
     }
+
+    @Operation(summary = "그룹 내 멤버 검색", description = "검색할 내용을 쿼리 스트링으로 보내주시면 됩니다. ex) /groups/members/search?nickname=지연")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
+
+    })
+    @GetMapping("/members/search")
+    public BaseResponse<List<GroupResponseDTO.GroupMemberDTO>> searchGroupMembers(
+//            @PathVariable Long groupId,
+            @RequestParam String nickname) {
+
+        Long groupId = 1L;
+        List<GroupMember> members = groupMemberService.searchGroupMembersByNickname(groupId, nickname);
+        return BaseResponse.onSuccess(GroupMemberConverter.toGroupMemberListDTO(members));
+    }
 }
