@@ -13,7 +13,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -52,6 +54,22 @@ public class GroupMemberController {
         Page<GroupMember> members = groupMemberService.getGroupMembersList(groupId, page);
 
         return BaseResponse.onSuccess(GroupMemberConverter.toGroupMemberListPageDTO(members));
+    }
+
+    @Operation(summary = "프로필 사진 설정 또는 수정", description = "multipart/form-data 타입으로 profielPicture라는 이름으로 보내주시면 됩니다.")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "MEMBER4001", description = "멤버를 찾을 수 없습니다!",content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+    })
+    @PostMapping(value = "/members/{memberId}/profile-picture", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public BaseResponse<GroupResponseDTO.GroupMemberDetailsDTO> updateProfilePicture(
+            //@PathVariable Long groupId,
+            @PathVariable Long memberId,
+            @RequestPart(value = "profilePicture") MultipartFile profilePicture) {
+
+        Long groupId = 1L;
+        GroupMember updatedGroupMember = groupMemberService.updateProfilePicture(groupId, memberId, profilePicture);
+        return BaseResponse.onSuccess(GroupMemberConverter.toGroupMemberDetailsDTO(updatedGroupMember));
     }
 
     @Operation(summary = "그룹 멤버 추가", description = "유저 아이디 필요합니다.")

@@ -30,6 +30,9 @@ public enum ErrorStatus implements BaseErrorCode {
     NICKNAME_NOT_EXIST(HttpStatus.BAD_REQUEST, "USER_402", "닉네임은 필수 입니다."),
     USER_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "USER_403", "이미 가입된 번호입니다."),
 
+    // 그룹 관련 에러
+    MEMBER_NOT_FOUND(HttpStatus.BAD_REQUEST, "MEMBER_401", "그룹 멤버가 없습니다."),
+
     // Auth 관련 에러
     AUTH_EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH_001", "토큰이 만료되었습니다."),
     AUTH_INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH_002", "토큰이 유효하지 않습니다."),
