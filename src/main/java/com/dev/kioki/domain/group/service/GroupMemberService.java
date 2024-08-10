@@ -1,6 +1,7 @@
 package com.dev.kioki.domain.group.service;
 
 import com.dev.kioki.domain.group.Handler.GroupHandler;
+import com.dev.kioki.domain.group.dto.GroupRequestDTO;
 import com.dev.kioki.domain.group.entity.Group;
 import com.dev.kioki.domain.group.entity.GroupMember;
 import com.dev.kioki.domain.group.repository.GroupMemberRepository;
@@ -19,6 +20,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -112,4 +114,32 @@ public class GroupMemberService {
         }
         return groupMemberRepository.save(groupMember);
     }
+
+    public GroupMember updateGroupMember(Long groupId, Long memberId, GroupRequestDTO.GroupMemberUpdateDTO memberInfo) {
+        GroupMember groupMember = groupMemberRepository.findByGroup_GroupIdAndGroupMemberId(groupId, memberId);
+
+        if (groupMember == null) {
+            throw new GroupHandler(ErrorStatus.MEMBER_NOT_FOUND);
+        }
+
+        //DTO의 필드가 null이 아닌 경우에만 업데이트
+        if (memberInfo.getNoteTitle() != null) {
+            groupMember.setNoteTitle(memberInfo.getNoteTitle());
+        }
+        if (memberInfo.getNoteBody() != null) {
+            groupMember.setNoteText(memberInfo.getNoteBody());
+        }
+        if (memberInfo.getColor() != null) {
+            groupMember.setColor(memberInfo.getColor());
+        }
+        if (memberInfo.getFontSize() != null) {
+            groupMember.setFontSize(memberInfo.getFontSize());
+        }
+        if (memberInfo.getNickname() != null) {
+            groupMember.setNickname(memberInfo.getNickname());
+        }
+
+        return groupMemberRepository.save(groupMember);
+    }
+
 }
