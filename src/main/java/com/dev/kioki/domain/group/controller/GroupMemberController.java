@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
@@ -84,5 +85,21 @@ public class GroupMemberController {
         Long groupId = 1L;
         GroupMember groupMember = groupMemberService.addMemberToGroup(groupId, request.getUserId());
         return BaseResponse.of(_CREATED, GroupMemberConverter.toGroupMemberDetailsDTO(groupMember));
+    }
+
+    @Operation(summary = "그룹 멤버 메모 및 커스텀 상세 수정", description = "변경하지 않을 필드는 생략해서 보내주셔도 됩니다. 프로필 사진은 다른 api를 이용해주세요. 폰트 사이즈는 NORMAL 또는 LARGE로 보내주시면 됩니다. 색상은 색상 코드로 보내주세요. 멤버가 생성되었을 때는 default로 #000000(검정색)과 NORMAL로 설정됩니다.")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "MEMBER4001", description = "멤버를 찾을 수 없습니다!",content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+    })
+    @PatchMapping(value = "/members/{memberId}", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    public BaseResponse<GroupResponseDTO.GroupMemberDetailsDTO> updateGroupMember(
+            //@PathVariable Long groupId,
+            @PathVariable Long memberId,
+            @RequestBody @Valid GroupRequestDTO.GroupMemberUpdateDTO memberInfo) {
+
+        Long groupId = 1L;
+        GroupMember updatedGroupMember = groupMemberService.updateGroupMember(groupId, memberId, memberInfo);
+        return BaseResponse.onSuccess(GroupMemberConverter.toGroupMemberDetailsDTO(updatedGroupMember));
     }
 }
