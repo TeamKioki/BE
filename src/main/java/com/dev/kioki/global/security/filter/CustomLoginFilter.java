@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -52,6 +53,8 @@ public class CustomLoginFilter extends AbstractAuthenticationProcessingFilter {
             @NonNull HttpServletResponse response,
             @NonNull FilterChain chain,
             @NonNull Authentication authResult) throws IOException, ServletException {
+
+        SecurityContextHolder.getContext().setAuthentication(authResult);
 
         String accessToken = jwtUtil.createAccessToken(authResult.getName(), authResult.getPrincipal().toString(), ((CustomAuthenticationToken) authResult).getRole());
         String refreshToken = jwtUtil.createRefreshToken(authResult.getName(), authResult.getPrincipal().toString(), ((CustomAuthenticationToken) authResult).getRole());
