@@ -4,6 +4,8 @@ import com.dev.kioki.domain.user.repository.UserRepository;
 import com.dev.kioki.global.common.code.status.SuccessStatus;
 import com.dev.kioki.global.config.WebConfig;
 import com.dev.kioki.global.redis.RedisUtil;
+import com.dev.kioki.global.security.exception.JwtAccessDeniedHandler;
+import com.dev.kioki.global.security.exception.JwtAuthenticationEntryPoint;
 import com.dev.kioki.global.security.filter.CustomLoginFilter;
 import com.dev.kioki.global.security.filter.CustomLogoutHandler;
 import com.dev.kioki.global.security.filter.JwtExceptionFilter;
@@ -36,6 +38,8 @@ public class SecurityConfig {
     private final AuthenticationConfiguration authenticationConfiguration;
     private final RedisUtil redisUtil;
     private final UserRepository userRepository;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
     @Bean
     public AuthenticationManager authenticationManager() throws Exception {
@@ -79,6 +83,10 @@ public class SecurityConfig {
 
         http.sessionManagement(sessionManagement -> sessionManagement
                 .sessionCreationPolicy((SessionCreationPolicy.STATELESS)));
+
+        http.exceptionHandling(configurer -> configurer
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                .accessDeniedHandler(jwtAccessDeniedHandler));
 
         http.authorizeHttpRequests(requests -> requests
                 .requestMatchers(allowUrls).permitAll()

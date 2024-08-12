@@ -40,7 +40,9 @@ public enum ErrorStatus implements BaseErrorCode {
     LOGOUT_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH_004", "로그아웃된 access 토큰 입니다."),
     INVALID_REQUEST_BODY(HttpStatus.BAD_REQUEST, "AUTH_005", "잘못된 요청 본문입니다."),
     INVALID_REQUEST_HEADER(HttpStatus.BAD_REQUEST, "AUTH_006", "잘못된 요청 헤더입니다."),
-    AUTHORIZATION_HEADER_MISSING(HttpStatus.UNAUTHORIZED, "AUTH_015", "Authorization 헤더가 비어있습니다.")
+    AUTHORIZATION_HEADER_MISSING(HttpStatus.UNAUTHORIZED, "AUTH_015", "Authorization 헤더가 비어있습니다."),
+    USER_AUTHENTICATION_FAIL(HttpStatus.UNAUTHORIZED, "AUTH_013", "유저 인증에 실패했습니다."),
+    USER_INSUFFICIENT_PERMISSION(HttpStatus.FORBIDDEN, "AUTH_014", "권한이 부족한 사용자 입니다."),
     ;
 
     private final HttpStatus httpStatus;
