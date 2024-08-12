@@ -24,7 +24,8 @@ public class Model extends BaseEntity {
 
     private String name;
 
-    private String image_url;
+    @Column(name = "image_url")
+    private String imageUrl;
 
     private Integer level;
 

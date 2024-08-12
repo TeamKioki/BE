@@ -17,4 +17,9 @@ public class StoreQueryServiceImpl implements StoreQueryService {
     public List<Store> findAll() {
         return storeRepository.findAll();
     }
+
+    @Override
+    public List<Store> findAllByFilter(Integer level, Integer store_count, Float distance) {
+        return storeRepository.findByModel_LevelAndStoreCountAndDistance(level,store_count,distance);
+    }
 }

@@ -17,8 +17,13 @@ public class StoreConverter {
                 .id(store.getId())
                 .name(store.getName())
                 .brand(store.getBrand())
-                .store_count(store.getStore_count())
-                .kiosk_count(store.getKiosk_count())
+                .modelId(store.getModel().getId())
+                .modelName(store.getModel().getName())
+                .level(store.getModel().getLevel())
+                .rate(store.getModel().getRate())
+                .distance(store.getDistance())
+                .store_count(store.getStoreCount())
+                .kiosk_count(store.getKioskCount())
                 .icon_url(store.getIcon_url())
                 .build();
     }

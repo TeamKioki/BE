@@ -13,7 +13,15 @@ public class StoreResponseDTO {
     public static class StoreDTO {
         private Long id;
 
-        private Model model;
+        private Long modelId;
+
+        private String modelName;
+
+        private Integer level;
+
+        private Float rate;
+
+        private Float distance;
 
         private String name;
 

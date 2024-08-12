@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface StoreQueryService {
     List<Store> findAll();
+
+    List<Store> findAllByFilter(Integer level, Integer count, Float distance);
 }
