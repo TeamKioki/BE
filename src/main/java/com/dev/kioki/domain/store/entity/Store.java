@@ -27,9 +27,13 @@ public class Store {
 
     private BrandType brand;
 
-    private Integer store_count;
+    @Column(name = "store_count")
+    private Integer storeCount;
 
-    private Integer kiosk_count;
+    @Column(name = "kiosk_count")
+    private Integer kioskCount;
+
+    private Float distance;
 
     private String icon_url;
 }
