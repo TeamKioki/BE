@@ -2,6 +2,7 @@ package com.dev.kioki.global.config;
 
 import com.dev.kioki.global.security.annotation.ExtractTokenArgumentResolver;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -23,9 +24,10 @@ public class WebConfig implements WebMvcConfigurer {
         resolvers.add(extractTokenArgumentResolver);
     }
 
+    @Bean
     public static CorsConfigurationSource apiConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOriginPatterns(Arrays.asList("http://localhost:8080", "http://localhost:3000"));
+        configuration.setAllowedOriginPatterns(Arrays.asList("http://localhost:8080", "http://localhost:3000", "https://dev.kioki.site"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
