@@ -5,7 +5,10 @@ import com.dev.kioki.domain.group.dto.GroupRequestDTO;
 import com.dev.kioki.domain.group.dto.GroupResponseDTO;
 import com.dev.kioki.domain.group.entity.GroupMember;
 import com.dev.kioki.domain.group.service.GroupMemberService;
+import com.dev.kioki.domain.group.service.GroupService;
+import com.dev.kioki.domain.user.entity.User;
 import com.dev.kioki.global.common.BaseResponse;
+import com.dev.kioki.global.security.annotation.AuthUser;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -30,15 +33,18 @@ public class GroupMemberController {
     @Autowired
     private GroupMemberService groupMemberService;
 
+    @Autowired
+    private GroupService groupService;
+
     @Operation(summary = "그룹 멤버 목록 조회 API", description = "")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
     })
     @GetMapping("/members")
     public BaseResponse<List<GroupResponseDTO.GroupMemberDTO>> getGroupMembers(
-            //@PathVariable Long groupId
+            @AuthUser User user
     ) {
-        Long groupId = 1L;
+        Long groupId = groupService.getGroupIdByUser(user);
         List<GroupMember> members = groupMemberService.getGroupMembers(groupId);
         return BaseResponse.onSuccess(GroupMemberConverter.toGroupMemberListDTO(members));
     }

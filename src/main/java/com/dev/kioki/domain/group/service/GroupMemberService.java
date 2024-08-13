@@ -9,6 +9,7 @@ import com.dev.kioki.domain.group.repository.GroupRepository;
 import com.dev.kioki.domain.user.entity.User;
 import com.dev.kioki.domain.user.repository.UserRepository;
 import com.dev.kioki.global.common.code.status.ErrorStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,6 +26,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
+@Transactional(readOnly = true)
 public class GroupMemberService {
 
     @Autowired
@@ -53,6 +55,7 @@ public class GroupMemberService {
         return StorePage;
     }
 
+    @Transactional
     public GroupMember addMemberToGroup(Long groupId, Long userId) {
         Group group = groupRepository.findById(groupId)
                 .orElseThrow(()-> new GroupHandler(ErrorStatus.USER_NOT_FOUND));
@@ -77,6 +80,7 @@ public class GroupMemberService {
         return groupMemberRepository.save(groupMember);
     }
 
+    @Transactional
     public GroupMember updateProfilePicture(Long groupId, Long memberId, MultipartFile profilePicture) {
         GroupMember groupMember = groupMemberRepository.findByGroup_GroupIdAndGroupMemberId(groupId, memberId);
 
@@ -115,6 +119,7 @@ public class GroupMemberService {
         return groupMemberRepository.save(groupMember);
     }
 
+    @Transactional
     public GroupMember updateGroupMember(Long groupId, Long memberId, GroupRequestDTO.GroupMemberUpdateDTO memberInfo) {
         GroupMember groupMember = groupMemberRepository.findByGroup_GroupIdAndGroupMemberId(groupId, memberId);
 
