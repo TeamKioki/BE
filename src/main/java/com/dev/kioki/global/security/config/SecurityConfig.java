@@ -32,7 +32,7 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 
 @Configuration
 @RequiredArgsConstructor
-@EnableWebSecurity(debug = true)
+// @EnableWebSecurity(debug = true)
 public class SecurityConfig {
 
     private final AuthenticationConfiguration authenticationConfiguration;
