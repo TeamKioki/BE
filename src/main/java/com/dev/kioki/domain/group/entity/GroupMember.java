@@ -1,6 +1,5 @@
 package com.dev.kioki.domain.group.entity;
 
-import com.dev.kioki.domain.group.entity.Group;
 import com.dev.kioki.domain.user.entity.User;
 import com.dev.kioki.domain.user.entity.enums.FontSize;
 import jakarta.persistence.*;

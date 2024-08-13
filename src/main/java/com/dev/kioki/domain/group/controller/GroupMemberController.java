@@ -41,7 +41,7 @@ public class GroupMemberController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
     })
     @GetMapping("/members")
-    public BaseResponse<List<GroupResponseDTO.GroupMemberDTO>> getGroupMembers(
+    public BaseResponse<List<GroupResponseDTO.GroupMemberDTO>> getAllGroupMembers(
             @AuthUser User user
     ) {
         Long groupId = groupService.getGroupIdByUser(user);
@@ -54,10 +54,10 @@ public class GroupMemberController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
     })
     @GetMapping("/members/paged")
-    public BaseResponse<GroupResponseDTO.GroupMemberListDTO> getGroupMembers(
-            //@PathVariable Long groupId,
+    public BaseResponse<GroupResponseDTO.GroupMemberListDTO> getPagedGroupMembers(
+            @AuthUser User user,
             @RequestParam(name = "page") Integer page) {
-        Long groupId = 1L;
+        Long groupId = groupService.getGroupIdByUser(user);
         Page<GroupMember> members = groupMemberService.getGroupMembersList(groupId, page);
 
         return BaseResponse.onSuccess(GroupMemberConverter.toGroupMemberListPageDTO(members));
@@ -70,11 +70,11 @@ public class GroupMemberController {
     })
     @PostMapping(value = "/members/{memberId}/profile-picture", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public BaseResponse<GroupResponseDTO.GroupMemberDetailsDTO> updateProfilePicture(
-            //@PathVariable Long groupId,
+            @AuthUser User user,
             @PathVariable Long memberId,
             @RequestPart(value = "profilePicture") MultipartFile profilePicture) {
 
-        Long groupId = 1L;
+        Long groupId = groupService.getGroupIdByUser(user);
         GroupMember updatedGroupMember = groupMemberService.updateProfilePicture(groupId, memberId, profilePicture);
         return BaseResponse.onSuccess(GroupMemberConverter.toGroupMemberDetailsDTO(updatedGroupMember));
     }
@@ -86,9 +86,9 @@ public class GroupMemberController {
     })
     @PostMapping("/members")
     public BaseResponse<GroupResponseDTO.GroupMemberDetailsDTO> addMemberToGroup(
-            //@PathVariable Long groupId,
+            @AuthUser User user,
             @RequestBody GroupRequestDTO.GroupMemberRequest request) {
-        Long groupId = 1L;
+        Long groupId = groupService.getGroupIdByUser(user);
         GroupMember groupMember = groupMemberService.addMemberToGroup(groupId, request.getUserId());
         return BaseResponse.of(_CREATED, GroupMemberConverter.toGroupMemberDetailsDTO(groupMember));
     }
@@ -100,11 +100,11 @@ public class GroupMemberController {
     })
     @PatchMapping(value = "/members/{memberId}", consumes = {MediaType.APPLICATION_JSON_VALUE})
     public BaseResponse<GroupResponseDTO.GroupMemberDetailsDTO> updateGroupMember(
-            //@PathVariable Long groupId,
+            @AuthUser User user,
             @PathVariable Long memberId,
             @RequestBody @Valid GroupRequestDTO.GroupMemberUpdateDTO memberInfo) {
 
-        Long groupId = 1L;
+        Long groupId = groupService.getGroupIdByUser(user);
         GroupMember updatedGroupMember = groupMemberService.updateGroupMember(groupId, memberId, memberInfo);
         return BaseResponse.onSuccess(GroupMemberConverter.toGroupMemberDetailsDTO(updatedGroupMember));
     }
@@ -116,9 +116,9 @@ public class GroupMemberController {
     })
     @GetMapping("/members/{memberId}/details")
     public BaseResponse<GroupResponseDTO.GroupMemberDetailsDTO> getGroupMemberDetails(
-            //@PathVariable Long groupId,
+            @AuthUser User user,
             @PathVariable Long memberId) {
-        Long groupId = 1L;
+        Long groupId = groupService.getGroupIdByUser(user);
         GroupMember groupMemberDetails = groupMemberService.getGroupMemberDetails(groupId, memberId);
         return BaseResponse.onSuccess(GroupMemberConverter.toGroupMemberDetailsDTO(groupMemberDetails));
     }
@@ -126,14 +126,13 @@ public class GroupMemberController {
     @Operation(summary = "그룹 내 멤버 검색", description = "검색할 내용을 쿼리 스트링으로 보내주시면 됩니다. ex) /groups/members/search?nickname=지연")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
-
     })
     @GetMapping("/members/search")
     public BaseResponse<List<GroupResponseDTO.GroupMemberDTO>> searchGroupMembers(
-//            @PathVariable Long groupId,
+            @AuthUser User user,
             @RequestParam String nickname) {
 
-        Long groupId = 1L;
+        Long groupId = groupService.getGroupIdByUser(user);
         List<GroupMember> members = groupMemberService.searchGroupMembersByNickname(groupId, nickname);
         return BaseResponse.onSuccess(GroupMemberConverter.toGroupMemberListDTO(members));
     }
