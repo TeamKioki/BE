@@ -1,5 +1,6 @@
 package com.dev.kioki.global.config;
 
+import com.dev.kioki.global.security.annotation.AuthUserArgumentResolver;
 import com.dev.kioki.global.security.annotation.ExtractTokenArgumentResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -17,10 +18,12 @@ import java.util.List;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
+    private final AuthUserArgumentResolver authUserArgumentResolver;
     private final ExtractTokenArgumentResolver extractTokenArgumentResolver;
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+        resolvers.add(authUserArgumentResolver);
         resolvers.add(extractTokenArgumentResolver);
     }
 
