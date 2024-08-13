@@ -20,6 +20,6 @@ public class StoreQueryServiceImpl implements StoreQueryService {
 
     @Override
     public List<Store> findAllByFilter(Integer level, Integer store_count, Float distance) {
-        return storeRepository.findByModel_LevelAndStoreCountAndDistance(level,store_count,distance);
+        return storeRepository.findByFilter(level,store_count,distance);
     }
 }

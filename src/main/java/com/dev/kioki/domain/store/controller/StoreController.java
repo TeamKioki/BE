@@ -50,9 +50,9 @@ public class StoreController {
             @Parameter(name = "distance", description = "거리"),
     })
     public BaseResponse<List<StoreResponseDTO.StoreDTO>> getStoresByFilter(
-            @RequestParam(name = "level", required = true) Integer level,
-            @RequestParam(name = "store_count", required = true) Integer store_count,
-            @RequestParam(name = "distance", required = true) Float distance) {
+            @RequestParam(name = "level", required = false) Integer level,
+            @RequestParam(name = "store_count", required = false) Integer store_count,
+            @RequestParam(name = "distance", required = false) Float distance) {
 
         List<Store> stores = storeQueryService.findAllByFilter(level,store_count,distance);
         return BaseResponse.onSuccess(StoreConverter.storeDTO(stores));
