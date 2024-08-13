@@ -46,15 +46,15 @@ public class StoreController {
     })
     @Parameters({
             @Parameter(name = "level", description = "키오스크 난이도"),
-            @Parameter(name = "store_count", description = "매장 내 키오스크 개수"),
+            @Parameter(name = "kiosk_count", description = "매장 내 키오스크 개수"),
             @Parameter(name = "distance", description = "거리"),
     })
     public BaseResponse<List<StoreResponseDTO.StoreDTO>> getStoresByFilter(
             @RequestParam(name = "level", required = false) Integer level,
-            @RequestParam(name = "store_count", required = false) Integer store_count,
+            @RequestParam(name = "kiosk_count", required = false) Integer kiosk_count,
             @RequestParam(name = "distance", required = false) Float distance) {
 
-        List<Store> stores = storeQueryService.findAllByFilter(level,store_count,distance);
+        List<Store> stores = storeQueryService.findAllByFilter(level,kiosk_count,distance);
         return BaseResponse.onSuccess(StoreConverter.storeDTO(stores));
     }
 

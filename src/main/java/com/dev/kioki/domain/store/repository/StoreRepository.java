@@ -9,7 +9,7 @@ import java.util.List;
 public interface StoreRepository extends JpaRepository<Store, Long> {
     @Query("SELECT s FROM Store s " +
             "WHERE (:level IS NULL OR s.model.level = :level) " +
-            "AND (:store_count IS NULL OR s.storeCount = :store_count) " +
+            "AND (:kiosk_count IS NULL OR s.kioskCount = :kiosk_count) " +
             "AND (:distance IS NULL OR s.distance = :distance)")
-    List<Store> findByFilter(Integer level, Integer store_count, Float distance);
+    List<Store> findByFilter(Integer level, Integer kiosk_count, Float distance);
 }
