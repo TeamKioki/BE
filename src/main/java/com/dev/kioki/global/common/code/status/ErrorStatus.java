@@ -32,6 +32,7 @@ public enum ErrorStatus implements BaseErrorCode {
 
     // 그룹 관련 에러
     MEMBER_NOT_FOUND(HttpStatus.BAD_REQUEST, "MEMBER_401", "그룹 멤버가 없습니다."),
+    GROUP_NOT_FOUND(HttpStatus.BAD_REQUEST, "GROUP_401", "그룹이 없습니다."),
 
     // Auth 관련 에러
     AUTH_EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH_001", "토큰이 만료되었습니다."),

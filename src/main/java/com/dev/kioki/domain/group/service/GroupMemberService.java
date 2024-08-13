@@ -9,22 +9,22 @@ import com.dev.kioki.domain.group.repository.GroupRepository;
 import com.dev.kioki.domain.user.entity.User;
 import com.dev.kioki.domain.user.repository.UserRepository;
 import com.dev.kioki.global.common.code.status.ErrorStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
 @Service
+@Transactional(readOnly = true)
 public class GroupMemberService {
 
     @Autowired
@@ -36,7 +36,15 @@ public class GroupMemberService {
     @Autowired
     private UserRepository userRepository;
 
-    private String uploadDir = "";
+    private String uploadDir = "uploads/";
+
+    private GroupMember getGroupMemberOrThrow(Long groupId, Long memberId) {
+        GroupMember groupMember = groupMemberRepository.findByGroup_GroupIdAndGroupMemberId(groupId, memberId);
+        if (groupMember == null) {
+            throw new GroupHandler(ErrorStatus.MEMBER_NOT_FOUND);
+        }
+        return groupMember;
+    }
 
     public List<GroupMember> getGroupMembers(Long groupId) {
         List<GroupMember> groupMembers = groupMemberRepository.findByGroup_GroupId(groupId);
@@ -53,9 +61,10 @@ public class GroupMemberService {
         return StorePage;
     }
 
+    @Transactional
     public GroupMember addMemberToGroup(Long groupId, Long userId) {
         Group group = groupRepository.findById(groupId)
-                .orElseThrow(()-> new GroupHandler(ErrorStatus.USER_NOT_FOUND));
+                .orElseThrow(()-> new GroupHandler(ErrorStatus.GROUP_NOT_FOUND));
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new GroupHandler(ErrorStatus.USER_NOT_FOUND));
 
@@ -77,8 +86,9 @@ public class GroupMemberService {
         return groupMemberRepository.save(groupMember);
     }
 
+    @Transactional
     public GroupMember updateProfilePicture(Long groupId, Long memberId, MultipartFile profilePicture) {
-        GroupMember groupMember = groupMemberRepository.findByGroup_GroupIdAndGroupMemberId(groupId, memberId);
+        GroupMember groupMember = getGroupMemberOrThrow(groupId, memberId);
 
 
         if (groupMember == null) {
@@ -115,8 +125,9 @@ public class GroupMemberService {
         return groupMemberRepository.save(groupMember);
     }
 
+    @Transactional
     public GroupMember updateGroupMember(Long groupId, Long memberId, GroupRequestDTO.GroupMemberUpdateDTO memberInfo) {
-        GroupMember groupMember = groupMemberRepository.findByGroup_GroupIdAndGroupMemberId(groupId, memberId);
+        GroupMember groupMember = getGroupMemberOrThrow(groupId, memberId);
 
         if (groupMember == null) {
             throw new GroupHandler(ErrorStatus.MEMBER_NOT_FOUND);
@@ -144,7 +155,7 @@ public class GroupMemberService {
 
 
     public GroupMember getGroupMemberDetails(Long groupId, Long memberId) {
-        GroupMember groupMember = groupMemberRepository.findByGroup_GroupIdAndGroupMemberId(groupId, memberId);
+        GroupMember groupMember = getGroupMemberOrThrow(groupId, memberId);
 
         if (groupMember == null) {
             throw new GroupHandler(ErrorStatus.MEMBER_NOT_FOUND);
