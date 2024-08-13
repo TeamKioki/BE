@@ -1,6 +1,7 @@
 package com.dev.kioki.domain.store.controller;
 
 import com.dev.kioki.domain.store.converter.StoreConverter;
+import com.dev.kioki.domain.store.dto.StoreRequestDTO;
 import com.dev.kioki.domain.store.dto.StoreResponseDTO;
 import com.dev.kioki.domain.store.entity.Store;
 import com.dev.kioki.domain.store.repository.StoreRepository;
@@ -58,4 +59,13 @@ public class StoreController {
         return BaseResponse.onSuccess(StoreConverter.storeDTO(stores));
     }
 
+    @PostMapping
+    @Operation(summary = "(백엔드용) 음식점 가게 등록", description="가게를 등록합니다.")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
+    })
+    public BaseResponse<StoreResponseDTO.StoreDTO> createStore(@RequestBody StoreRequestDTO.StoreDTO storeRequestDTO) {
+        Store store = storeQueryService.createStore(storeRequestDTO);
+        return BaseResponse.onSuccess(StoreConverter.toDTO(store));
+    }
 }
