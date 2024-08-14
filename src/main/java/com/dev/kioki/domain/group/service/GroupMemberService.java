@@ -86,6 +86,14 @@ public class GroupMemberService {
         return groupMemberRepository.save(groupMember);
     }
 
+
+    @Transactional
+    public void removeMemberFromGroup(Long groupId, Long memberId) {
+        // 해당 그룹에서 특정 멤버를 찾음
+        GroupMember groupMember = getGroupMemberOrThrow(groupId, memberId);
+        groupMemberRepository.delete(groupMember);
+    }
+
     @Transactional
     public GroupMember updateProfilePicture(Long groupId, Long memberId, MultipartFile profilePicture) {
         GroupMember groupMember = getGroupMemberOrThrow(groupId, memberId);

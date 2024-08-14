@@ -18,6 +18,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -107,6 +108,16 @@ public class GroupMemberController {
         Long groupId = groupService.getGroupIdByUser(user);
         GroupMember updatedGroupMember = groupMemberService.updateGroupMember(groupId, memberId, memberInfo);
         return BaseResponse.onSuccess(GroupMemberConverter.toGroupMemberDetailsDTO(updatedGroupMember));
+    }
+
+    @Operation(summary = "그룹 멤버 삭제")
+    @DeleteMapping("/members/{memberId}")
+    public ResponseEntity<Void> removeMember(
+            @AuthUser User user,
+            @PathVariable Long memberId) {
+        Long groupId = groupService.getGroupIdByUser(user);
+        groupMemberService.removeMemberFromGroup(groupId, memberId);
+        return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "그룹 멤버 상세 조회", description = "멤버 아이디 필요합니다. 멤버 아이디는 유저아이디와 별도입니다.")
