@@ -27,9 +27,9 @@ public class PhoneDuplicationValidation implements ConstraintValidator<PhoneDupl
 
         boolean isAlreadyExist = userRepository.existsByPhone(phone);
 
-        if (!isAlreadyExist) {
+        if (isAlreadyExist) {
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(USER_ALREADY_EXIST.toString())
+            context.buildConstraintViolationWithTemplate(USER_ALREADY_EXIST.getMessage())
                     .addPropertyNode("phone")
                     .addConstraintViolation();
             return false;
