@@ -6,7 +6,11 @@ import com.dev.kioki.domain.group.dto.GroupResponseDTO;
 import com.dev.kioki.domain.group.entity.GroupMember;
 import com.dev.kioki.domain.group.service.GroupMemberService;
 import com.dev.kioki.domain.group.service.GroupService;
+import com.dev.kioki.domain.user.converter.UserConverter;
+import com.dev.kioki.domain.user.dto.UserResponseDTO;
 import com.dev.kioki.domain.user.entity.User;
+import com.dev.kioki.domain.user.service.UserQueryService;
+import com.dev.kioki.domain.user.service.UserQueryServiceImpl;
 import com.dev.kioki.global.common.BaseResponse;
 import com.dev.kioki.global.security.annotation.AuthUser;
 import io.swagger.v3.oas.annotations.Operation;
@@ -36,6 +40,9 @@ public class GroupMemberController {
 
     @Autowired
     private GroupService groupService;
+
+    @Autowired
+    private UserQueryService userQueryService;
 
     @Operation(summary = "그룹 멤버 목록 조회 API", description = "")
     @ApiResponses({
@@ -147,4 +154,19 @@ public class GroupMemberController {
         List<GroupMember> members = groupMemberService.searchGroupMembersByNickname(groupId, nickname);
         return BaseResponse.onSuccess(GroupMemberConverter.toGroupMemberListDTO(members));
     }
+
+    @Operation(summary = "그룹 외 멤버 검색", description = "")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
+    })
+    @GetMapping("/search")
+    public BaseResponse<List<UserResponseDTO.UserGroupDTO>> searchUsers(@AuthUser User user,
+                                                                        @RequestParam(required = false) String query) {
+
+        List<User> users = userQueryService.searchUsers(query);
+        Long groupId = groupService.getGroupIdByUser(user);
+        List<GroupMember> members = groupMemberService.getGroupMembers(groupId);
+        return BaseResponse.onSuccess(UserConverter.userGroupSearchDTO(users, members));
+    }
+
 }
