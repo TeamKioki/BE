@@ -71,4 +71,17 @@ public class UserResponseDTO {
         Boolean isFirst;
         Boolean isLast;
     }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UserGroupDTO {
+        Long userId;
+        String name;
+        String phone;
+        String introduction;
+        String imageName;
+        Boolean isGroupMember;
+    }
 }

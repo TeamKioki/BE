@@ -1,5 +1,6 @@
 package com.dev.kioki.domain.user.converter;
 
+import com.dev.kioki.domain.group.entity.GroupMember;
 import com.dev.kioki.domain.inquire.dto.InquireResponseDTO;
 import com.dev.kioki.domain.inquire.entity.Inquire;
 import com.dev.kioki.domain.user.entity.User;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class UserConverter {
@@ -75,5 +77,24 @@ public class UserConverter {
                 .listSize(inquirePreViewDTOList.size())
                 .inquireList(inquirePreViewDTOList)
                 .build();
+    }
+
+    public static List<UserResponseDTO.UserGroupDTO> userGroupSearchDTO(List<User> users, List<GroupMember> groupMembers){
+
+        Set<Long> groupMemberIds = groupMembers.stream()
+                .map(GroupMember::getMemberUserId)
+                .collect(Collectors.toSet());
+
+        return users.stream().map(user -> {
+            boolean isGroupMember = groupMemberIds.contains(user.getId());
+            return UserResponseDTO.UserGroupDTO.builder()
+                    .userId(user.getId())
+                    .name(user.getName())
+                    .phone(user.getPhone())
+                    .isGroupMember(isGroupMember)
+                    .introduction(user.getIntroduction())
+                    .imageName(user.getImageName())
+                    .build();
+        }).collect(Collectors.toList());
     }
 }

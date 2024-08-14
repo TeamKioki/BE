@@ -5,6 +5,7 @@ import com.dev.kioki.domain.review.entity.Review;
 import com.dev.kioki.domain.user.entity.User;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserQueryService {
@@ -15,4 +16,5 @@ public interface UserQueryService {
 
     Page<Inquire> getInquireList(Long user_id, Integer page);
 
+    List<User> searchUsers(String query);
 }
