@@ -1,5 +1,6 @@
 package com.dev.kioki.global.aws.s3.controller;
 
+import com.dev.kioki.global.aws.s3.dto.PresignedUrlToDownloadDTO;
 import com.dev.kioki.global.aws.s3.dto.PresignedUrlToUploadDTO;
 import com.dev.kioki.global.aws.s3.service.S3Service;
 import com.dev.kioki.global.common.BaseResponse;
@@ -32,5 +33,16 @@ public class S3Controller {
             @RequestParam(value = "fileName") String fileName
     ) {
         return BaseResponse.onSuccess(s3Service.getPresignedUrlToUpload(fileName));
+    }
+
+    @Operation(summary = "파일 다운로드용 presignedUrl 생성 요청", description = "파일 다운로드를 위한 presignedUrl 생성을 요청하는 API 입니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "COMMON200", description = "성공입니다."),
+    })
+    @GetMapping("/presigned/download")
+    public BaseResponse<PresignedUrlToDownloadDTO> getPresignedUrlToDownload(
+            @RequestParam(value = "keyName") String keyName
+    ) {
+        return BaseResponse.onSuccess(s3Service.getPresignedUrlToDownload(keyName));
     }
 }
