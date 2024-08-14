@@ -1,6 +1,7 @@
 package com.dev.kioki.domain.store.controller;
 
 import com.dev.kioki.domain.store.converter.StoreConverter;
+import com.dev.kioki.domain.store.dto.StoreRequestDTO;
 import com.dev.kioki.domain.store.dto.StoreResponseDTO;
 import com.dev.kioki.domain.store.entity.Store;
 import com.dev.kioki.domain.store.repository.StoreRepository;
@@ -40,14 +41,14 @@ public class StoreController {
     }
 
     @GetMapping("/filter")
-    @Operation(summary = "음식점 가게 필터 목록", description = "필러 적용된 가게 목록을 모두 불러옵니다.")
+    @Operation(summary = "음식점 가게 필터 목록", description = "필터 적용된 가게 목록을 모두 불러옵니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
     })
     @Parameters({
-            @Parameter(name = "level", description = "키오스크 난이도"),
-            @Parameter(name = "kiosk_count", description = "매장 내 키오스크 개수"),
-            @Parameter(name = "distance", description = "거리"),
+            @Parameter(name = "level", description = "키오스크 난이도 (1, 2, 3)"),
+            @Parameter(name = "kiosk_count", description = "매장 내 키오스크 개수 (1, 2)"),
+            @Parameter(name = "distance", description = "거리 (0.5, 1.0, 1.5)"),
     })
     public BaseResponse<List<StoreResponseDTO.StoreDTO>> getStoresByFilter(
             @RequestParam(name = "level", required = false) Integer level,
@@ -58,4 +59,13 @@ public class StoreController {
         return BaseResponse.onSuccess(StoreConverter.storeDTO(stores));
     }
 
+    @PostMapping
+    @Operation(summary = "(백엔드용) 음식점 가게 등록", description="가게를 등록합니다.")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
+    })
+    public BaseResponse<StoreResponseDTO.StoreDTO> createStore(@RequestBody StoreRequestDTO.StoreDTO storeRequestDTO) {
+        Store store = storeQueryService.createStore(storeRequestDTO);
+        return BaseResponse.onSuccess(StoreConverter.toDTO(store));
+    }
 }
