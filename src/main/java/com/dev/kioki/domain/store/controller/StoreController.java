@@ -41,14 +41,14 @@ public class StoreController {
     }
 
     @GetMapping("/filter")
-    @Operation(summary = "음식점 가게 필터 목록", description = "필러 적용된 가게 목록을 모두 불러옵니다.")
+    @Operation(summary = "음식점 가게 필터 목록", description = "필터 적용된 가게 목록을 모두 불러옵니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
     })
     @Parameters({
-            @Parameter(name = "level", description = "키오스크 난이도"),
-            @Parameter(name = "kiosk_count", description = "매장 내 키오스크 개수"),
-            @Parameter(name = "distance", description = "거리"),
+            @Parameter(name = "level", description = "키오스크 난이도 (1, 2, 3)"),
+            @Parameter(name = "kiosk_count", description = "매장 내 키오스크 개수 (1, 2)"),
+            @Parameter(name = "distance", description = "거리 (0.5, 1.0, 1.5)"),
     })
     public BaseResponse<List<StoreResponseDTO.StoreDTO>> getStoresByFilter(
             @RequestParam(name = "level", required = false) Integer level,
