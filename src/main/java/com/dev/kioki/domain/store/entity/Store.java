@@ -2,11 +2,15 @@ package com.dev.kioki.domain.store.entity;
 
 import com.dev.kioki.domain.brand.entity.enums.BrandType;
 import com.dev.kioki.domain.kiosk.entity.Model;
+import com.dev.kioki.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -36,4 +40,8 @@ public class Store {
     private Float distance;
 
     private String icon_url;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private User user;
 }
