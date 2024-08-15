@@ -40,9 +40,10 @@ public class Model extends BaseEntity {
     private User user;
 
     public void setUser(User user) {
-        this.user = user;
-        if (!user.getModelList().contains(this)) {
-            user.getModelList().add(this);
+        if(this.user != null) {
+            user.getModelList().remove(this);
         }
+        this.user = user;
+        user.getModelList().add(this);
     }
 }
