@@ -1,7 +1,6 @@
 package com.dev.kioki.domain.user.converter;
 
 import com.dev.kioki.domain.group.entity.GroupMember;
-import com.dev.kioki.domain.inquire.dto.InquireResponseDTO;
 import com.dev.kioki.domain.inquire.entity.Inquire;
 import com.dev.kioki.domain.kiosk.entity.Model;
 import com.dev.kioki.domain.store.entity.Store;
@@ -109,7 +108,7 @@ public class UserConverter {
                 .imageUrl(model.getImageUrl())
                 .level(model.getLevel())
                 .rate(model.getRate())
-                .stores(store_ids)
+                .stores_id(store_ids)
                 .build();
     }
 
