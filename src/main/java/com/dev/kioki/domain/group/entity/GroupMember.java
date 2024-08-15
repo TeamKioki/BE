@@ -20,15 +20,15 @@ import org.hibernate.annotations.DynamicUpdate;
 public class GroupMember {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long groupMemberId;
-
-    @ManyToOne
-    @JoinColumn(name = "group_id")
-    private Group group;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "member_user_id")
     private User member;
+
+    @ManyToOne
+    @JoinColumn(name = "owner_id")
+    private User owner;
 
     private String profilePictureUrl;
     private String noteText;

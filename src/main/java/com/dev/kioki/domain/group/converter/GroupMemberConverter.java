@@ -30,7 +30,7 @@ public class GroupMemberConverter {
 
     public static GroupResponseDTO.GroupMemberDTO toGroupMemberDTO(GroupMember member){
         return GroupResponseDTO.GroupMemberDTO.builder()
-                .memberId(member.getGroupMemberId())
+                .memberId(member.getId())
                 .userId(member.getMemberUserId())
                 .nickname(member.getNickname())
                 .profilePictureUrl(member.getProfilePictureUrl())
@@ -41,7 +41,7 @@ public class GroupMemberConverter {
 
     public static GroupResponseDTO.GroupMemberDetailsDTO toGroupMemberDetailsDTO(GroupMember member){
         return GroupResponseDTO.GroupMemberDetailsDTO.builder()
-                .memberId(member.getGroupMemberId())
+                .memberId(member.getId())
                 .userId(member.getMemberUserId())
                 .nickname(member.getNickname())
                 .profilePictureUrl(member.getProfilePictureUrl())

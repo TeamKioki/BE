@@ -1,13 +1,10 @@
 package com.dev.kioki.domain.user.service;
 
-import com.dev.kioki.domain.group.entity.GroupMember;
 import com.dev.kioki.domain.group.repository.GroupMemberRepository;
-import com.dev.kioki.domain.group.repository.GroupRepository;
 import com.dev.kioki.domain.inquire.entity.Inquire;
 import com.dev.kioki.domain.inquire.repository.InquireRepository;
 import com.dev.kioki.domain.review.entity.Review;
 import com.dev.kioki.domain.review.repository.ReviewRepository;
-import com.dev.kioki.domain.user.dto.UserResponseDTO;
 import com.dev.kioki.domain.user.entity.User;
 import com.dev.kioki.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,8 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -29,7 +24,6 @@ public class UserQueryServiceImpl implements UserQueryService {
     private final ReviewRepository reviewRepository;
     private final UserRepository userRepository;
     private final InquireRepository inquireRepository;
-    private final GroupMemberRepository groupMemberRepository;
     @Override
     public Optional<User> findUser(Long id) {
         return userRepository.findById(id);
