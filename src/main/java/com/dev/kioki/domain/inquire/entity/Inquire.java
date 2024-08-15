@@ -21,19 +21,25 @@ public class Inquire extends BaseEntity {
     private Long id;
 
     private String title;
-
     private String body;
-
     private String imageUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
+    @ManyToOne(fetch = FetchType.LAZY)  // 문의 카테고리 추가
+    @JoinColumn(name = "category_id")
+    private InquireCategory category;
+
     public void setUser(User user) {
         if(this.user != null)
             user.getInquireList().remove(this);
         this.user = user;
         user.getInquireList().add(this);
+    }
+
+    public void setCategory(InquireCategory category) {
+        this.category = category;
     }
 }
