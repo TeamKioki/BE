@@ -5,12 +5,10 @@ import com.dev.kioki.domain.group.dto.GroupRequestDTO;
 import com.dev.kioki.domain.group.dto.GroupResponseDTO;
 import com.dev.kioki.domain.group.entity.GroupMember;
 import com.dev.kioki.domain.group.service.GroupMemberService;
-import com.dev.kioki.domain.group.service.GroupService;
 import com.dev.kioki.domain.user.converter.UserConverter;
 import com.dev.kioki.domain.user.dto.UserResponseDTO;
 import com.dev.kioki.domain.user.entity.User;
 import com.dev.kioki.domain.user.service.UserQueryService;
-import com.dev.kioki.domain.user.service.UserQueryServiceImpl;
 import com.dev.kioki.global.common.BaseResponse;
 import com.dev.kioki.global.security.annotation.AuthUser;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,7 +22,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -39,9 +36,6 @@ public class GroupMemberController {
     private GroupMemberService groupMemberService;
 
     @Autowired
-    private GroupService groupService;
-
-    @Autowired
     private UserQueryService userQueryService;
 
     @Operation(summary = "그룹 멤버 목록 조회 API", description = "")
@@ -52,8 +46,7 @@ public class GroupMemberController {
     public BaseResponse<List<GroupResponseDTO.GroupMemberDTO>> getAllGroupMembers(
             @AuthUser User user
     ) {
-        Long groupId = groupService.getGroupIdByUser(user);
-        List<GroupMember> members = groupMemberService.getGroupMembers(groupId);
+        List<GroupMember> members = groupMemberService.getGroupMembers(user.getId());
         return BaseResponse.onSuccess(GroupMemberConverter.toGroupMemberListDTO(members));
     }
 
@@ -65,27 +58,11 @@ public class GroupMemberController {
     public BaseResponse<GroupResponseDTO.GroupMemberListDTO> getPagedGroupMembers(
             @AuthUser User user,
             @RequestParam(name = "page") Integer page) {
-        Long groupId = groupService.getGroupIdByUser(user);
-        Page<GroupMember> members = groupMemberService.getGroupMembersList(groupId, page);
+        Page<GroupMember> members = groupMemberService.getGroupMembersList(user.getId(), page);
 
         return BaseResponse.onSuccess(GroupMemberConverter.toGroupMemberListPageDTO(members));
     }
 
-    @Operation(summary = "프로필 사진 설정 또는 수정", description = "multipart/form-data 타입으로 profielPicture라는 이름으로 보내주시면 됩니다.")
-    @ApiResponses({
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "MEMBER4001", description = "멤버를 찾을 수 없습니다!",content = @Content(schema = @Schema(implementation = BaseResponse.class))),
-    })
-    @PostMapping(value = "/members/{memberId}/profile-picture", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public BaseResponse<GroupResponseDTO.GroupMemberDetailsDTO> updateProfilePicture(
-            @AuthUser User user,
-            @PathVariable Long memberId,
-            @RequestPart(value = "profilePicture") MultipartFile profilePicture) {
-
-        Long groupId = groupService.getGroupIdByUser(user);
-        GroupMember updatedGroupMember = groupMemberService.updateProfilePicture(groupId, memberId, profilePicture);
-        return BaseResponse.onSuccess(GroupMemberConverter.toGroupMemberDetailsDTO(updatedGroupMember));
-    }
 
     @Operation(summary = "그룹 멤버 추가", description = "유저 아이디 필요합니다.")
     @ApiResponses({
@@ -96,8 +73,7 @@ public class GroupMemberController {
     public BaseResponse<GroupResponseDTO.GroupMemberDetailsDTO> addMemberToGroup(
             @AuthUser User user,
             @RequestBody GroupRequestDTO.GroupMemberRequest request) {
-        Long groupId = groupService.getGroupIdByUser(user);
-        GroupMember groupMember = groupMemberService.addMemberToGroup(groupId, request.getUserId());
+        GroupMember groupMember = groupMemberService.addMemberToGroup(user.getId(), request.getUserId());
         return BaseResponse.of(_CREATED, GroupMemberConverter.toGroupMemberDetailsDTO(groupMember));
     }
 
@@ -108,22 +84,22 @@ public class GroupMemberController {
     })
     @PatchMapping(value = "/members/{memberId}", consumes = {MediaType.APPLICATION_JSON_VALUE})
     public BaseResponse<GroupResponseDTO.GroupMemberDetailsDTO> updateGroupMember(
-            @AuthUser User user,
             @PathVariable Long memberId,
             @RequestBody @Valid GroupRequestDTO.GroupMemberUpdateDTO memberInfo) {
 
-        Long groupId = groupService.getGroupIdByUser(user);
-        GroupMember updatedGroupMember = groupMemberService.updateGroupMember(groupId, memberId, memberInfo);
+        GroupMember updatedGroupMember = groupMemberService.updateGroupMember(memberId, memberInfo);
         return BaseResponse.onSuccess(GroupMemberConverter.toGroupMemberDetailsDTO(updatedGroupMember));
     }
 
     @Operation(summary = "그룹 멤버 삭제")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "204",description = "NO CONTENT, 리소스 삭제됨"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "MEMBER4001", description = "멤버를 찾을 수 없습니다!",content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+    })
     @DeleteMapping("/members/{memberId}")
     public ResponseEntity<Void> removeMember(
-            @AuthUser User user,
             @PathVariable Long memberId) {
-        Long groupId = groupService.getGroupIdByUser(user);
-        groupMemberService.removeMemberFromGroup(groupId, memberId);
+        groupMemberService.removeMemberFromGroup(memberId);
         return ResponseEntity.noContent().build();
     }
 
@@ -136,8 +112,7 @@ public class GroupMemberController {
     public BaseResponse<GroupResponseDTO.GroupMemberDetailsDTO> getGroupMemberDetails(
             @AuthUser User user,
             @PathVariable Long memberId) {
-        Long groupId = groupService.getGroupIdByUser(user);
-        GroupMember groupMemberDetails = groupMemberService.getGroupMemberDetails(groupId, memberId);
+        GroupMember groupMemberDetails = groupMemberService.getGroupMember(memberId);
         return BaseResponse.onSuccess(GroupMemberConverter.toGroupMemberDetailsDTO(groupMemberDetails));
     }
 
@@ -150,12 +125,11 @@ public class GroupMemberController {
             @AuthUser User user,
             @RequestParam String nickname) {
 
-        Long groupId = groupService.getGroupIdByUser(user);
-        List<GroupMember> members = groupMemberService.searchGroupMembersByNickname(groupId, nickname);
+        List<GroupMember> members = groupMemberService.searchGroupMembersByNickname(user.getId(), nickname);
         return BaseResponse.onSuccess(GroupMemberConverter.toGroupMemberListDTO(members));
     }
 
-    @Operation(summary = "그룹 외 멤버 검색", description = "")
+    @Operation(summary = "그룹 외 멤버 검색", description = "쿼리 없이 요청을 보낸 경우 모든 유저를 전달합니다. 쿼리 예시) http://localhost:8080/groups/search?query=010")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
     })
@@ -164,8 +138,7 @@ public class GroupMemberController {
                                                                         @RequestParam(required = false) String query) {
 
         List<User> users = userQueryService.searchUsers(query);
-        Long groupId = groupService.getGroupIdByUser(user);
-        List<GroupMember> members = groupMemberService.getGroupMembers(groupId);
+        List<GroupMember> members = groupMemberService.getGroupMembers(user.getId());
         return BaseResponse.onSuccess(UserConverter.userGroupSearchDTO(users, members));
     }
 

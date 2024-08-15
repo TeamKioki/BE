@@ -10,12 +10,10 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface GroupMemberRepository extends JpaRepository<GroupMember, Long> {
-    List<GroupMember> findByGroup_GroupId(Long groupId);
+    List<GroupMember> findByOwnerId(Long ownerId);
 
-    Page<GroupMember> findByGroup_GroupId(Long groupId, PageRequest pageRequest);
+    Page<GroupMember> findByOwnerId(Long ownerId, PageRequest pageRequest);
 
-    GroupMember findByGroup_GroupIdAndGroupMemberId(Long groupId, Long memberUserId);
-
-    @Query("select gm from GroupMember gm where gm.group.groupId = :groupId and gm.nickname like %:nickname%")
-    List<GroupMember> findByGroupIdAndNicknameContaining(@Param("groupId") Long groupId, @Param("nickname") String nickname);
+    @Query("select gm from GroupMember gm where gm.owner.id = :ownerId and gm.nickname like %:nickname%")
+    List<GroupMember> findByOwnerIdAndNicknameContaining(@Param("ownerId") Long ownerId, @Param("nickname") String nickname);
 }
