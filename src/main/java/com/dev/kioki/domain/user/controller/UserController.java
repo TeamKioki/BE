@@ -1,8 +1,10 @@
 package com.dev.kioki.domain.user.controller;
 
 import com.dev.kioki.domain.inquire.entity.Inquire;
+import com.dev.kioki.domain.kiosk.entity.Model;
 import com.dev.kioki.domain.review.entity.Review;
 import com.dev.kioki.domain.user.converter.UserConverter;
+import com.dev.kioki.domain.user.dto.UserRequestDTO;
 import com.dev.kioki.domain.user.dto.UserResponseDTO;
 import com.dev.kioki.domain.user.entity.User;
 import com.dev.kioki.domain.user.service.UserCommandService;
@@ -25,18 +27,19 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
 @Validated
 @RequestMapping("/users")
-@Tag(name = "마이페이지 관련 컨트롤러")
 public class UserController {
 
     private final UserCommandService userCommandService;
     private final UserQueryService userQueryService;
 
+    @Tag(name = "마이페이지 관련 컨트롤러")
     @GetMapping("/{user_id}")
     @Operation(summary = "회원 정보 조회 API", description = "회원의 정보를 조회하는 API입니다.")
     @ApiResponses({
@@ -53,7 +56,7 @@ public class UserController {
         return BaseResponse.onSuccess(UserConverter.userInfoDTO(user));
     }
 
-
+    @Tag(name = "마이페이지 관련 컨트롤러")
     @GetMapping("/{user_id}/reviews")
     @Operation(summary = "리뷰 목록 조회 API", description = "나의 리뷰 목록을 조회하는 API입니다.")
     @ApiResponses({
@@ -73,6 +76,7 @@ public class UserController {
         return BaseResponse.onSuccess(UserConverter.reviewPreViewListDTO(reviews));
     }
 
+    @Tag(name = "마이페이지 관련 컨트롤러")
     @GetMapping("/{user_id}/inquires")
     @Operation(summary = "문의 목록 조회 API", description = "나의 문의 목록을 조회하는 API입니다.")
     @ApiResponses({
@@ -90,4 +94,40 @@ public class UserController {
         return BaseResponse.onSuccess(UserConverter.inquirePreViewListDTO(inquires));
     }
 
+    @Tag(name ="내 키오스크 관리 관련 컨트롤러")
+    @PostMapping("/{user_id}/kiosk")
+    @Operation(summary = "키오스크 모델 추가", description = "유저에게 키오스크를 추가합니다")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH003", description = "access 토큰을 주세요!",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH004", description = "access 토큰 만료",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH006", description = "access 토큰 모양이 이상함",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+    })
+    @Parameters({
+            @Parameter(name = "user_id", description = "유저 ID"),
+    })
+    public BaseResponse<UserResponseDTO.UserModelDTO> addModel(@PathVariable(name = "user_id") Long user_id, @RequestBody(required = true) UserRequestDTO.UserModelDto userModel){
+        Long modelId = userModel.getModelId();
+
+        Model updatedModel = userCommandService.addModelToUser(user_id, modelId);
+        return BaseResponse.onSuccess(UserConverter.userModelDTO(updatedModel));
+    }
+
+    @Tag(name ="내 키오스크 관리 관련 컨트롤러")
+    @GetMapping("/{user_id}/kiosk")
+    @Operation(summary = "유저 키오스크 목록 조회", description="유저의 키오스크 목록을 불러옵니다.")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH003", description = "access 토큰을 주세요!",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH004", description = "access 토큰 만료",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH006", description = "access 토큰 모양이 이상함",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+    })
+    @Parameters({
+            @Parameter(name = "user_id", description = "유저 ID"),
+    })
+    public BaseResponse<List<UserResponseDTO.UserModelDTO>> getModels(@PathVariable(name = "user_id") Long user_id){
+        List<Model> getModelsByUser = userQueryService.getModelsByUser(user_id);
+
+        return BaseResponse.onSuccess(UserConverter.userModelListDTO(getModelsByUser));
+    }
 }

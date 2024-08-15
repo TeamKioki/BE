@@ -2,6 +2,8 @@ package com.dev.kioki.domain.user.entity;
 
 import com.dev.kioki.domain.group.entity.GroupMember;
 import com.dev.kioki.domain.inquire.entity.Inquire;
+import com.dev.kioki.domain.kiosk.entity.Model;
+import com.dev.kioki.domain.store.entity.Store;
 import com.dev.kioki.domain.user.entity.enums.FontSize;
 import com.dev.kioki.domain.review.entity.Review;
 import com.dev.kioki.domain.user.entity.enums.UserRole;
@@ -60,5 +62,8 @@ public class User extends BaseEntity {
 
     @OneToMany(mappedBy = "owner")
     private List<GroupMember> groupMembers;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Model> modelList = new ArrayList<>();
 
 }

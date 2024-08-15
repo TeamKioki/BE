@@ -1,6 +1,7 @@
 package com.dev.kioki.domain.user.service;
 
 import com.dev.kioki.domain.inquire.entity.Inquire;
+import com.dev.kioki.domain.kiosk.entity.Model;
 import com.dev.kioki.domain.review.entity.Review;
 import com.dev.kioki.domain.user.entity.User;
 import org.springframework.data.domain.Page;
@@ -17,4 +18,6 @@ public interface UserQueryService {
     Page<Inquire> getInquireList(Long user_id, Integer page);
 
     List<User> searchUsers(String query);
+
+    List<Model> getModelsByUser(Long user_id);
 }

@@ -1,8 +1,9 @@
 package com.dev.kioki.domain.user.converter;
 
 import com.dev.kioki.domain.group.entity.GroupMember;
-import com.dev.kioki.domain.inquire.dto.InquireResponseDTO;
 import com.dev.kioki.domain.inquire.entity.Inquire;
+import com.dev.kioki.domain.kiosk.entity.Model;
+import com.dev.kioki.domain.store.entity.Store;
 import com.dev.kioki.domain.user.entity.User;
 import com.dev.kioki.domain.review.entity.Review;
 import com.dev.kioki.domain.user.dto.UserResponseDTO;
@@ -96,5 +97,23 @@ public class UserConverter {
                     .imageName(user.getImageName())
                     .build();
         }).collect(Collectors.toList());
+    }
+
+    public static UserResponseDTO.UserModelDTO userModelDTO(Model model){
+        List<Long> store_ids = model.getStore().stream().map(Store::getId).toList();
+
+        return UserResponseDTO.UserModelDTO.builder()
+                .modelId(model.getId())
+                .name(model.getName())
+                .imageUrl(model.getImageUrl())
+                .level(model.getLevel())
+                .rate(model.getRate())
+                .stores_id(store_ids)
+                .build();
+    }
+
+    public static List<UserResponseDTO.UserModelDTO> userModelListDTO(List<Model> model) {
+
+        return model.stream().map(UserConverter::userModelDTO).toList();
     }
 }

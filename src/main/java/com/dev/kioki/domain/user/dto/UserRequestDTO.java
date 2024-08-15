@@ -29,4 +29,11 @@ public class UserRequestDTO {
         @NotNull
         private String imageUrl;
     }
+
+    @Getter
+    public static class UserModelDto {
+        @NotBlank
+        @NotNull
+        Long modelId;
+    }
 }

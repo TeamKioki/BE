@@ -84,4 +84,17 @@ public class UserResponseDTO {
         String imageName;
         Boolean isGroupMember;
     }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UserModelDTO {
+        Long modelId;
+        String name;
+        String imageUrl;
+        Integer level;
+        Float rate;
+        List<Long> stores_id;
+    }
 }
