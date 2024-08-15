@@ -8,6 +8,7 @@ import com.dev.kioki.domain.user.entity.User;
 import com.dev.kioki.domain.user.service.UserCommandService;
 import com.dev.kioki.domain.user.service.UserQueryService;
 import com.dev.kioki.global.common.BaseResponse;
+import com.dev.kioki.global.security.annotation.AuthUser;
 import com.dev.kioki.global.validation.annotation.ExistPage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -65,8 +66,10 @@ public class UserController {
             @Parameter(name = "user_id", description = "유저의 아이디입니다!"),
             @Parameter(name = "page", description = "페이지 번호, 1번이 1 페이지 입니다."),
     })
-    public BaseResponse<UserResponseDTO.ReviewPreViewListDTO> getReviewList(@PathVariable(name = "user_id") Long user_id, @ExistPage @RequestParam(name = "page") Integer page){
-        Page<Review> reviews = userQueryService.getReviewList(user_id, page);
+    public BaseResponse<UserResponseDTO.ReviewPreViewListDTO> getReviewList(
+            @AuthUser User user,
+            @RequestParam(name = "page") Integer page) {
+        Page<Review> reviews = userQueryService.getReviewList(user.getId(), page);
         return BaseResponse.onSuccess(UserConverter.reviewPreViewListDTO(reviews));
     }
 

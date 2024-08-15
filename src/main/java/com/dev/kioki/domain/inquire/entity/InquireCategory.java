@@ -1,11 +1,12 @@
-package com.dev.kioki.domain.notification.entity;
+package com.dev.kioki.domain.inquire.entity;
 
-import com.dev.kioki.domain.user.entity.User;
 import com.dev.kioki.global.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -14,7 +15,7 @@ import org.hibernate.annotations.DynamicUpdate;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @DynamicInsert
 @DynamicUpdate
-public class Notification extends BaseEntity {
+public class InquireCategory extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,9 +23,6 @@ public class Notification extends BaseEntity {
 
     private String title;
 
-    private String body;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @OneToMany(mappedBy = "category")
+    private List<Inquire> inquires;
 }

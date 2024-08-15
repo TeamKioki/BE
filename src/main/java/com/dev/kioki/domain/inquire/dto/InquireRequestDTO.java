@@ -14,5 +14,7 @@ public class InquireRequestDTO {
         String body;
         @NotNull
         String imageUrl;
+        @NotNull
+        Long categoryId;
     }
 }
