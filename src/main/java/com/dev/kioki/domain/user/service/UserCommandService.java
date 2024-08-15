@@ -7,4 +7,6 @@ public interface UserCommandService {
     User getUser(Long user_id);
 
     Model addModelToUser(Long user_id, Long modelId);
+
+    void removeModelFromUser(Long user_id, Long modelId);
 }
