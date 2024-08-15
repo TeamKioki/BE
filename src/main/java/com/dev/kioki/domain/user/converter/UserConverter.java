@@ -101,7 +101,6 @@ public class UserConverter {
     }
 
     public static UserResponseDTO.UserModelDTO userModelDTO(Model model){
-
         List<Long> store_ids = model.getStore().stream().map(Store::getId).toList();
 
         return UserResponseDTO.UserModelDTO.builder()
@@ -112,5 +111,10 @@ public class UserConverter {
                 .rate(model.getRate())
                 .stores(store_ids)
                 .build();
+    }
+
+    public static List<UserResponseDTO.UserModelDTO> userModelListDTO(List<Model> model) {
+
+        return model.stream().map(UserConverter::userModelDTO).toList();
     }
 }
