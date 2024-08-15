@@ -6,6 +6,7 @@ import com.dev.kioki.domain.group.repository.GroupRepository;
 import com.dev.kioki.domain.inquire.entity.Inquire;
 import com.dev.kioki.domain.inquire.repository.InquireRepository;
 import com.dev.kioki.domain.kiosk.entity.Model;
+import com.dev.kioki.domain.kiosk.repository.ModelRepository;
 import com.dev.kioki.domain.review.entity.Review;
 import com.dev.kioki.domain.review.repository.ReviewRepository;
 import com.dev.kioki.domain.user.dto.UserResponseDTO;
@@ -31,6 +32,8 @@ public class UserQueryServiceImpl implements UserQueryService {
     private final UserRepository userRepository;
     private final InquireRepository inquireRepository;
     private final GroupMemberRepository groupMemberRepository;
+    private final ModelRepository modelRepository;
+
     @Override
     public Optional<User> findUser(Long id) {
         return userRepository.findById(id);
@@ -68,8 +71,6 @@ public class UserQueryServiceImpl implements UserQueryService {
 
     @Override
     public List<Model> getModelsByUser(Long user_id) {
-        User user = userRepository.findById(user_id).get();
-
-        return user.getModelList();
+       return modelRepository.findByUserId(user_id);
     }
 }
