@@ -30,12 +30,12 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Validated
 @RequestMapping("/users")
-@Tag(name = "마이페이지 관련 컨트롤러")
 public class UserController {
 
     private final UserCommandService userCommandService;
     private final UserQueryService userQueryService;
 
+    @Tag(name = "마이페이지 관련 컨트롤러")
     @GetMapping("/{user_id}")
     @Operation(summary = "회원 정보 조회 API", description = "회원의 정보를 조회하는 API입니다.")
     @ApiResponses({
@@ -52,7 +52,7 @@ public class UserController {
         return BaseResponse.onSuccess(UserConverter.userInfoDTO(user));
     }
 
-
+    @Tag(name = "마이페이지 관련 컨트롤러")
     @GetMapping("/{user_id}/reviews")
     @Operation(summary = "리뷰 목록 조회 API", description = "나의 리뷰 목록을 조회하는 API입니다.")
     @ApiResponses({
@@ -70,6 +70,7 @@ public class UserController {
         return BaseResponse.onSuccess(UserConverter.reviewPreViewListDTO(reviews));
     }
 
+    @Tag(name = "마이페이지 관련 컨트롤러")
     @GetMapping("/{user_id}/inquires")
     @Operation(summary = "문의 목록 조회 API", description = "나의 문의 목록을 조회하는 API입니다.")
     @ApiResponses({
