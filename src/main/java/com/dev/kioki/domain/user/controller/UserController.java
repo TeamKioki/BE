@@ -1,8 +1,10 @@
 package com.dev.kioki.domain.user.controller;
 
 import com.dev.kioki.domain.inquire.entity.Inquire;
+import com.dev.kioki.domain.kiosk.entity.Model;
 import com.dev.kioki.domain.review.entity.Review;
 import com.dev.kioki.domain.user.converter.UserConverter;
+import com.dev.kioki.domain.user.dto.UserRequestDTO;
 import com.dev.kioki.domain.user.dto.UserResponseDTO;
 import com.dev.kioki.domain.user.entity.User;
 import com.dev.kioki.domain.user.service.UserCommandService;
@@ -86,6 +88,25 @@ public class UserController {
     public BaseResponse<UserResponseDTO.InquirePreViewListDTO> getInquireList(@PathVariable(name = "user_id") Long user_id, @ExistPage @RequestParam(name = "page") Integer page){
         Page<Inquire> inquires = userQueryService.getInquireList(user_id, page);
         return BaseResponse.onSuccess(UserConverter.inquirePreViewListDTO(inquires));
+    }
+
+    @Tag(name ="내 키오스크 관리 관련 컨트롤러")
+    @PostMapping("/{user_id}/kiosk")
+    @Operation(summary = "키오스크 모델 추가", description = "유저에게 키오스크를 추가합니다")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH003", description = "access 토큰을 주세요!",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH004", description = "access 토큰 만료",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH006", description = "access 토큰 모양이 이상함",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+    })
+    @Parameters({
+            @Parameter(name = "user_id", description = "유저 ID"),
+    })
+    public BaseResponse<UserResponseDTO.UserModelDTO> addModel(@PathVariable(name = "user_id") Long user_id, @RequestBody(required = true) UserRequestDTO.UserModelDto userModel){
+        Long modelId = userModel.getModelId();
+
+        Model updatedModel = userCommandService.addModelToUser(user_id, modelId);
+        return BaseResponse.onSuccess(UserConverter.userModelDTO(updatedModel));
     }
 
 }

@@ -38,4 +38,11 @@ public class Model extends BaseEntity {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
+
+    public void setUser(User user) {
+        this.user = user;
+        if (!user.getModelList().contains(this)) {
+            user.getModelList().add(this);
+        }
+    }
 }
