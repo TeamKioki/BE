@@ -1,7 +1,6 @@
 package com.dev.kioki.domain.user.dto;
 
 import com.dev.kioki.domain.review.entity.Review;
-import com.dev.kioki.domain.store.entity.Store;
 import com.dev.kioki.domain.user.entity.Helper;
 import com.dev.kioki.domain.user.entity.enums.FontSize;
 import lombok.AllArgsConstructor;
@@ -96,6 +95,6 @@ public class UserResponseDTO {
         String imageUrl;
         Integer level;
         Float rate;
-        List<Long> stores;
+        List<Long> stores_id;
     }
 }

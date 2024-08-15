@@ -31,6 +31,9 @@ public class UserCommandServiceImpl implements UserCommandService {
         User user = userRepository.findById(user_id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
+        //이미 모델 추가했으면
+        if(model.getUser().equals(user)) throw new RuntimeException("이 키오스크는 이미 등록했습니다.");
+
         // Assign the User to the Model
         model.setUser(user);
 
