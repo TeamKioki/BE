@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class AuthDTO {
 
@@ -60,6 +61,14 @@ public class AuthDTO {
         public static class SmsVerificationResultResponse {
             String phone;
             Boolean isCodeValid;
+        }
+
+        @Getter
+        @Builder
+        @AllArgsConstructor(access = AccessLevel.PROTECTED)
+        @NoArgsConstructor(access = AccessLevel.PROTECTED)
+        public static class QuitResponse {
+            LocalDateTime quitAt;
         }
     }
 }

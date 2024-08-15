@@ -60,7 +60,7 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Inquire> inquireList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.REMOVE)
     private List<GroupMember> groupMembers;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)

@@ -5,6 +5,8 @@ import com.dev.kioki.domain.auth.dto.AuthDTO.AuthRequest.*;
 import com.dev.kioki.domain.user.entity.User;
 import com.dev.kioki.domain.user.entity.enums.UserRole;
 
+import java.time.LocalDateTime;
+
 public class AuthConverter {
 
     public static SmsVerificationCodeResponse toSmsVerificationCodeResponse(String phone, String code) {
@@ -37,6 +39,12 @@ public class AuthConverter {
                 .kioskDifficulty(request.getKioskDifficulty())
                 .imageName(request.getImageName())
                 .userRole(UserRole.ROLE_USER)
+                .build();
+    }
+
+    public static QuitResponse toQuit() {
+        return QuitResponse.builder()
+                .quitAt(LocalDateTime.now())
                 .build();
     }
 }
