@@ -3,7 +3,9 @@ package com.dev.kioki.domain.auth.controller;
 import com.dev.kioki.domain.auth.dto.AuthDTO.AuthResponse.*;
 import com.dev.kioki.domain.auth.dto.AuthDTO.AuthRequest.*;
 import com.dev.kioki.domain.auth.service.AuthService;
+import com.dev.kioki.domain.user.entity.User;
 import com.dev.kioki.global.common.BaseResponse;
+import com.dev.kioki.global.security.annotation.AuthUser;
 import com.dev.kioki.global.security.annotation.ExtractToken;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -74,5 +76,14 @@ public class AuthController {
     })
     public BaseResponse<SmsVerificationResultResponse> verifyCode(@RequestBody SmsVerificationRequest request) {
         return BaseResponse.onSuccess(authService.verifyCode(request));
+    }
+
+    @DeleteMapping("/quit")
+    @Operation(summary="회원 탈퇴 API", description="회원 탈퇴 API입니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "COMMON200", description = "성공입니다.")
+    })
+    public BaseResponse<QuitResponse> quit(@AuthUser User user) {
+        return BaseResponse.onSuccess(authService.quit(user));
     }
 }

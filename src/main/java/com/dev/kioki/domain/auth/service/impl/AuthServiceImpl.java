@@ -105,4 +105,13 @@ public class AuthServiceImpl implements AuthService {
 
         return AuthConverter.toSmsVerificationResultResponse(request.getPhone(), isCodeValid);
     }
+
+    @Transactional
+    @Override
+    public QuitResponse quit(User user) {
+        redisUtil.deleteValue(user.getId().toString());
+        userRepository.deleteById(user.getId());
+
+        return AuthConverter.toQuit();
+    }
 }
