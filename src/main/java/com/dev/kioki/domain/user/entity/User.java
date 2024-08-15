@@ -1,6 +1,7 @@
 package com.dev.kioki.domain.user.entity;
 
 import com.dev.kioki.domain.inquire.entity.Inquire;
+import com.dev.kioki.domain.kiosk.entity.Model;
 import com.dev.kioki.domain.store.entity.Store;
 import com.dev.kioki.domain.user.entity.enums.FontSize;
 import com.dev.kioki.domain.review.entity.Review;
@@ -59,6 +60,6 @@ public class User extends BaseEntity {
     private List<Inquire> inquireList = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Store> storeList = new ArrayList<>();
+    private List<Model> modelList = new ArrayList<>();
 
 }

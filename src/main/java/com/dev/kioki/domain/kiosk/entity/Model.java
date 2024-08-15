@@ -1,6 +1,7 @@
 package com.dev.kioki.domain.kiosk.entity;
 
 import com.dev.kioki.domain.store.entity.Store;
+import com.dev.kioki.domain.user.entity.User;
 import com.dev.kioki.global.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -33,4 +34,8 @@ public class Model extends BaseEntity {
 
     @OneToMany(mappedBy = "model", fetch = FetchType.LAZY)
     private List<Store> store  = new ArrayList<>();
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private User user;
 }
