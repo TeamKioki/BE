@@ -73,4 +73,6 @@ public class UserQueryServiceImpl implements UserQueryService {
     public List<Model> getModelsByUser(Long user_id) {
        return modelRepository.findByUserId(user_id);
     }
+
+
 }

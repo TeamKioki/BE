@@ -32,7 +32,9 @@ public class UserCommandServiceImpl implements UserCommandService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         //이미 모델 추가했으면
-        if(model.getUser().equals(user)) throw new RuntimeException("이 키오스크는 이미 등록했습니다.");
+        if (model.getUser() != null && model.getUser().equals(user)) {
+            throw new RuntimeException("This kiosk is already registered to the user.");
+        }
 
         // Assign the User to the Model
         model.setUser(user);
@@ -40,5 +42,23 @@ public class UserCommandServiceImpl implements UserCommandService {
         // Save and return the updated Model
         modelRepository.save(model);
         return modelRepository.findById(modelId).get();
+    }
+
+    @Override
+    public void removeModelFromUser(Long user_id, Long modelId) {
+        // Fetch the Model by modelId
+        Model model = modelRepository.findById(modelId)
+                .orElseThrow(() -> new RuntimeException("Model not found"));
+
+        // Check if the Model belongs to the specified User
+        if (model.getUser() == null || !model.getUser().getId().equals(user_id)) {
+            throw new RuntimeException("이 키오스크 모델이 목록에 없습니다.");
+        }
+
+        // Disassociate the Model from the User
+        model.setUser(null);
+
+        // Save the updated Model entity
+        modelRepository.save(model);
     }
 }
