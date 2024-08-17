@@ -5,6 +5,8 @@ import com.dev.kioki.domain.kiosk.dto.ModelResponseDTO;
 import com.dev.kioki.domain.kiosk.entity.Model;
 import com.dev.kioki.domain.store.dto.StoreResponseDTO;
 import com.dev.kioki.domain.store.entity.Store;
+import com.dev.kioki.domain.user.converter.UserConverter;
+import com.dev.kioki.domain.user.dto.UserResponseDTO;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,6 +20,11 @@ public class ModelConverter {
                 .level((model.getLevel()))
                 .rate((model.getRate()))
                 .build();
+    }
+
+    public static List<ModelResponseDTO.ModelDTO> modelDTOList(List<Model> model) {
+
+        return model.stream().map(ModelConverter::toDTO).toList();
     }
 
 }
