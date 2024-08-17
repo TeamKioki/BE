@@ -8,5 +8,4 @@ public interface UserCommandService {
 
     Model addModelToUser(Long user_id, Long modelId);
 
-    void removeModelFromUser(Long user_id, Long modelId);
 }

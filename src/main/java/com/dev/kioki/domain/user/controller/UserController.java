@@ -103,11 +103,9 @@ public class UserController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH004", description = "access 토큰 만료",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH006", description = "access 토큰 모양이 이상함",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
-    @Parameters({
-            @Parameter(name = "user_id", description = "유저 ID"),
-    })
-    public BaseResponse<UserResponseDTO.UserModelDTO> addModel(@PathVariable(name = "user_id") Long user_id, @RequestBody(required = true) UserRequestDTO.UserModelDto userModel){
+    public BaseResponse<UserResponseDTO.UserModelDTO> addModel(@AuthUser User user,@RequestBody(required = true) UserRequestDTO.UserModelDto userModel){
         Long modelId = userModel.getModelId();
+        Long user_id = user.getId();
 
         Model updatedModel = userCommandService.addModelToUser(user_id, modelId);
         return BaseResponse.onSuccess(UserConverter.userModelDTO(updatedModel));
@@ -122,34 +120,12 @@ public class UserController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH004", description = "access 토큰 만료",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH006", description = "access 토큰 모양이 이상함",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
-    @Parameters({
-            @Parameter(name = "user_id", description = "유저 ID"),
-    })
-    public BaseResponse<List<UserResponseDTO.UserModelDTO>> getModels(@PathVariable(name = "user_id") Long user_id){
+    public BaseResponse<List<UserResponseDTO.UserModelDTO>> getModels(@AuthUser User user){
+        Long user_id = user.getId();
         List<Model> getModelsByUser = userQueryService.getModelsByUser(user_id);
 
         return BaseResponse.onSuccess(UserConverter.userModelListDTO(getModelsByUser));
     }
 
-    @Tag(name = "내 키오스크 관리 관련 컨트롤러")
-    @DeleteMapping("/{user_id}/kiosk/{modelId}")
-    @Operation(summary = "키오스크 삭제", description="유저의 키오스크 목록에서 키오스크를 삭제합니다.")
-    @ApiResponses({
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH003", description = "access 토큰을 주세요!",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH004", description = "access 토큰 만료",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH006", description = "access 토큰 모양이 이상함",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
-    })
-    @Parameters({
-            @Parameter(name = "user_id", description = "유저 ID"),
-            @Parameter(name = "modelId", description = "키오스크 모델 ID"),
-    })
-    public BaseResponse<List<UserResponseDTO.UserModelDTO>> deleteModel(@PathVariable(name = "user_id") Long user_id, @PathVariable(name = "modelId") Long modelId){
-        userCommandService.removeModelFromUser(user_id, modelId);
-
-        List<Model> modelsByUser = userQueryService.getModelsByUser(user_id);
-
-        return BaseResponse.onSuccess(UserConverter.userModelListDTO(modelsByUser));
-    }
 
 }
