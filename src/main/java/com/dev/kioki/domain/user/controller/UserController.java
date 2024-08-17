@@ -95,7 +95,7 @@ public class UserController {
     }
 
     @Tag(name ="내 키오스크 관리 관련 컨트롤러")
-    @PostMapping("/{user_id}/kiosk")
+    @PostMapping("/kiosk")
     @Operation(summary = "키오스크 모델 추가", description = "유저에게 키오스크를 추가합니다")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
@@ -112,7 +112,7 @@ public class UserController {
     }
 
     @Tag(name ="내 키오스크 관리 관련 컨트롤러")
-    @GetMapping("/{user_id}/kiosk")
+    @GetMapping("/kiosk")
     @Operation(summary = "유저 키오스크 목록 조회", description="유저의 키오스크 목록을 불러옵니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
@@ -127,5 +127,21 @@ public class UserController {
         return BaseResponse.onSuccess(UserConverter.userModelListDTO(getModelsByUser));
     }
 
+    @Tag(name ="내 키오스크 관리 관련 컨트롤러")
+    @DeleteMapping("/kiosk/{modelId}")
+    @Operation(summary = "유저 키오스크 모델 삭제", description = "유저의 키오스크 모델을 목록에서 삭제합니다.")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH003", description = "access 토큰을 주세요!",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH004", description = "access 토큰 만료",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH006", description = "access 토큰 모양이 이상함",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+    })
+    public BaseResponse<List<UserResponseDTO.UserModelDTO>> deleteModels(@AuthUser User user, @PathVariable(name = "modelId") Long modelId) {
+        Long user_id = user.getId();
+
+        List<Model> getModelsByUser = userCommandService.deleteModelFromUser(user_id,modelId);
+
+        return BaseResponse.onSuccess(UserConverter.userModelListDTO(getModelsByUser));
+    }
 
 }
