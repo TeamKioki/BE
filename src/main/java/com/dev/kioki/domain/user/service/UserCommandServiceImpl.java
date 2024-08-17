@@ -21,44 +21,27 @@ public class UserCommandServiceImpl implements UserCommandService {
         return userRepository.findById(user_id).get();
     }
 
+    @Transactional
     @Override
-    public Model addModelToUser(Long user_id, Long modelId) {
-        // Fetch the Model by modelId
+    public Model addModelToUser(Long userId, Long modelId) {
         Model model = modelRepository.findById(modelId)
                 .orElseThrow(() -> new RuntimeException("Model not found"));
 
-        // Fetch the User by userId
-        User user = userRepository.findById(user_id)
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        //이미 모델 추가했으면
-        if (model.getUser() != null && model.getUser().equals(user)) {
-            throw new RuntimeException("This kiosk is already registered to the user.");
+        // Check if the association already exists
+        if (user.getModelList().contains(model)) {
+            throw new RuntimeException("This model is already associated with the user.");
         }
 
-        // Assign the User to the Model
-        model.setUser(user);
+        // Add the association
+        user.addModel(model);
 
-        // Save and return the updated Model
-        modelRepository.save(model);
-        return modelRepository.findById(modelId).get();
+        // Save the user (this should cascade to the join table)
+        userRepository.save(user);
+
+        return model;
     }
 
-    @Override
-    public void removeModelFromUser(Long user_id, Long modelId) {
-        // Fetch the Model by modelId
-        Model model = modelRepository.findById(modelId)
-                .orElseThrow(() -> new RuntimeException("Model not found"));
-
-        // Check if the Model belongs to the specified User
-        if (model.getUser() == null || !model.getUser().getId().equals(user_id)) {
-            throw new RuntimeException("이 키오스크 모델이 목록에 없습니다.");
-        }
-
-        // Disassociate the Model from the User
-        model.setUser(null);
-
-        // Save the updated Model entity
-        modelRepository.save(model);
-    }
 }

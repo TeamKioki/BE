@@ -63,7 +63,29 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "owner", cascade = CascadeType.REMOVE)
     private List<GroupMember> groupMembers;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @ManyToMany
+    @JoinTable(
+            name = "user_model",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "model_id")
+    )
     private List<Model> modelList = new ArrayList<>();
 
+    public void addModel(Model model) {
+        if (!this.modelList.contains(model)) {
+            this.modelList.add(model);
+            if (!model.getUsers().contains(this)) {
+                model.getUsers().add(this);
+            }
+        }
+    }
+
+    public void removeModel(Model model) {
+        if (this.modelList.contains(model)) {
+            this.modelList.remove(model);
+            if (model.getUsers().contains(this)) {
+                model.getUsers().remove(this);
+            }
+        }
+    }
 }

@@ -35,15 +35,24 @@ public class Model extends BaseEntity {
     @OneToMany(mappedBy = "model", fetch = FetchType.LAZY)
     private List<Store> store  = new ArrayList<>();
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @ManyToMany(mappedBy = "modelList")
+    private List<User> users = new ArrayList<>();
 
-    public void setUser(User user) {
-        if(this.user != null) {
-            user.getModelList().remove(this);
+    public void addUser(User user) {
+        if (!this.users.contains(user)) {
+            this.users.add(user);
+            if (!user.getModelList().contains(this)) {
+                user.getModelList().add(this);
+            }
         }
-        this.user = user;
-        user.getModelList().add(this);
+    }
+
+    public void removeUser(User user) {
+        if (this.users.contains(user)) {
+            this.users.remove(user);
+            if (user.getModelList().contains(this)) {
+                user.getModelList().remove(this);
+            }
+        }
     }
 }

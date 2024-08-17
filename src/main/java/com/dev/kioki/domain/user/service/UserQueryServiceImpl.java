@@ -65,7 +65,7 @@ public class UserQueryServiceImpl implements UserQueryService {
 
     @Override
     public List<Model> getModelsByUser(Long user_id) {
-       return modelRepository.findByUserId(user_id);
+       return modelRepository.findModelsByUserId(user_id);
     }
 
 
