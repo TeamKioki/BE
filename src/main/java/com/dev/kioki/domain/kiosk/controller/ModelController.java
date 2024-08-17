@@ -42,4 +42,14 @@ public class ModelController {
         Model model = modelQueryService.createModel(modelRequestDTO);
         return BaseResponse.onSuccess(ModelConverter.toDTO(model));
     }
+
+    @GetMapping
+    @Operation(summary = "키오스크 모델 목록", description = "서버에 등록된 키오스크 모델을 불러옵니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "COMMON200", description="OK, 성공"),
+    })
+    public BaseResponse<List<ModelResponseDTO.ModelDTO>> getAllModels() {
+        List<Model> models = modelRepository.findAll();
+        return BaseResponse.onSuccess(ModelConverter.modelDTOList(models));
+    }
 }
