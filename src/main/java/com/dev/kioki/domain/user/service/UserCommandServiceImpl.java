@@ -1,9 +1,11 @@
 package com.dev.kioki.domain.user.service;
 
+import com.dev.kioki.domain.group.Handler.GroupHandler;
 import com.dev.kioki.domain.kiosk.entity.Model;
 import com.dev.kioki.domain.kiosk.repository.ModelRepository;
 import com.dev.kioki.domain.user.entity.User;
 import com.dev.kioki.domain.user.repository.UserRepository;
+import com.dev.kioki.global.common.code.status.ErrorStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,10 +29,10 @@ public class UserCommandServiceImpl implements UserCommandService {
     @Override
     public Model addModelToUser(Long userId, Long modelId) {
         Model model = modelRepository.findById(modelId)
-                .orElseThrow(() -> new RuntimeException("키오스크를 찾을 수 없습니다."));
+                .orElseThrow(() -> new GroupHandler(ErrorStatus.MODEL_NOT_FOUND));
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("유저를 찾을 수 없습니다."));
+                .orElseThrow(() -> new GroupHandler(ErrorStatus.USER_NOT_FOUND));
 
         // Check if the association already exists
         if (user.getModelList().contains(model)) {
@@ -50,13 +52,13 @@ public class UserCommandServiceImpl implements UserCommandService {
     @Override
     public List<Model> deleteModelFromUser(Long userId, Long modelId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("유저를 찾을 수 없습니다."));
+                .orElseThrow(() -> new GroupHandler(ErrorStatus.USER_NOT_FOUND));
 
         Model model = modelRepository.findById(modelId)
-                .orElseThrow(() -> new RuntimeException("키오스크를 찾을 수 없습니다."));
+                .orElseThrow(() -> new GroupHandler(ErrorStatus.MODEL_NOT_FOUND));
 
         if (!user.getModelList().contains(model)) {
-            throw new RuntimeException("저장하지 않은 키오스크입니다.");
+            throw new GroupHandler(ErrorStatus.USER_MODEL_NOT_FOUND);
         }
 
         //delete model

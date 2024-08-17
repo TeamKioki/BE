@@ -29,6 +29,7 @@ public enum ErrorStatus implements BaseErrorCode {
     USER_NOT_FOUND(HttpStatus.BAD_REQUEST, "USER_401", "사용자가 없습니다."),
     NICKNAME_NOT_EXIST(HttpStatus.BAD_REQUEST, "USER_402", "닉네임은 필수 입니다."),
     USER_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "USER_403", "이미 가입된 번호입니다."),
+    USER_MODEL_NOT_FOUND(HttpStatus.NOT_FOUND, "USER404", "유저가 저장하지 않은 키오스크 모델입니다."),
 
     // 그룹 관련 에러
     MEMBER_NOT_FOUND(HttpStatus.BAD_REQUEST, "MEMBER_401", "그룹 멤버가 없습니다."),
@@ -43,6 +44,10 @@ public enum ErrorStatus implements BaseErrorCode {
     AUTHORIZATION_HEADER_MISSING(HttpStatus.UNAUTHORIZED, "AUTH_015", "Authorization 헤더가 비어있습니다."),
     USER_AUTHENTICATION_FAIL(HttpStatus.UNAUTHORIZED, "AUTH_013", "유저 인증에 실패했습니다."),
     USER_INSUFFICIENT_PERMISSION(HttpStatus.FORBIDDEN, "AUTH_014", "권한이 부족한 사용자 입니다."),
+
+    // 키오스크 모델 관련 에러
+    MODEL_NOT_FOUND(HttpStatus.NOT_FOUND, "MODEL404", "키오스크 모델이 존재하지 않습니다."),
+
     ;
 
     private final HttpStatus httpStatus;
