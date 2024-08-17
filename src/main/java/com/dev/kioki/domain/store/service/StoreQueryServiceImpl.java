@@ -1,10 +1,12 @@
 package com.dev.kioki.domain.store.service;
 
+import com.dev.kioki.domain.group.Handler.GroupHandler;
 import com.dev.kioki.domain.kiosk.entity.Model;
 import com.dev.kioki.domain.kiosk.repository.ModelRepository;
 import com.dev.kioki.domain.store.dto.StoreRequestDTO;
 import com.dev.kioki.domain.store.entity.Store;
 import com.dev.kioki.domain.store.repository.StoreRepository;
+import com.dev.kioki.global.common.code.status.ErrorStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +31,7 @@ public class StoreQueryServiceImpl implements StoreQueryService {
 
     @Override
     public Store createStore(StoreRequestDTO.StoreDTO storeRequestDTO) {
-        Model model = modelRepository.findById(storeRequestDTO.getModelId()).orElse(null);
+        Model model = modelRepository.findById(storeRequestDTO.getModelId()).orElseThrow(() -> new GroupHandler(ErrorStatus.MODEL_NOT_FOUND));
 
         Store store = Store.builder()
                 .model(model)

@@ -63,6 +63,7 @@ public class StoreController {
     @Operation(summary = "(백엔드용) 음식점 가게 등록", description="가게를 등록합니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "MODEL404", description = "키오스크 모델이 존재하지 않습니다.")
     })
     public BaseResponse<StoreResponseDTO.StoreDTO> createStore(@RequestBody StoreRequestDTO.StoreDTO storeRequestDTO) {
         Store store = storeQueryService.createStore(storeRequestDTO);
