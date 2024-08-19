@@ -102,6 +102,9 @@ public class GroupMemberService {
         if (memberInfo.getNickname() != null) {
             groupMember.setNickname(memberInfo.getNickname());
         }
+        if (memberInfo.getProfilePictureUrl() != null) {
+            groupMember.setNickname(memberInfo.getProfilePictureUrl());
+        }
 
         return groupMemberRepository.save(groupMember);
     }

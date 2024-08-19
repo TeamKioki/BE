@@ -21,5 +21,7 @@ public class GroupRequestDTO {
         private FontSize fontSize;
 
         private String nickname;
+
+        private String profilePictureUrl;
     }
 }

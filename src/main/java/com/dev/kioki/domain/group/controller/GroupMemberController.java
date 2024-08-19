@@ -110,7 +110,6 @@ public class GroupMemberController {
     })
     @GetMapping("/members/{memberId}/details")
     public BaseResponse<GroupResponseDTO.GroupMemberDetailsDTO> getGroupMemberDetails(
-            @AuthUser User user,
             @PathVariable Long memberId) {
         GroupMember groupMemberDetails = groupMemberService.getGroupMember(memberId);
         return BaseResponse.onSuccess(GroupMemberConverter.toGroupMemberDetailsDTO(groupMemberDetails));
