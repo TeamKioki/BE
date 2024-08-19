@@ -59,7 +59,6 @@ public class GroupMemberController {
             @AuthUser User user,
             @RequestParam(name = "page") Integer page) {
         Page<GroupMember> members = groupMemberService.getGroupMembersList(user.getId(), page);
-
         return BaseResponse.onSuccess(GroupMemberConverter.toGroupMemberListPageDTO(members));
     }
 
@@ -123,7 +122,6 @@ public class GroupMemberController {
     public BaseResponse<List<GroupResponseDTO.GroupMemberDTO>> searchGroupMembers(
             @AuthUser User user,
             @RequestParam String nickname) {
-
         List<GroupMember> members = groupMemberService.searchGroupMembersByNickname(user.getId(), nickname);
         return BaseResponse.onSuccess(GroupMemberConverter.toGroupMemberListDTO(members));
     }
@@ -135,7 +133,6 @@ public class GroupMemberController {
     @GetMapping("/search")
     public BaseResponse<List<UserResponseDTO.UserGroupDTO>> searchUsers(@AuthUser User user,
                                                                         @RequestParam(required = false) String query) {
-
         List<User> users = userQueryService.searchUsers(query);
         List<GroupMember> members = groupMemberService.getGroupMembers(user.getId());
         return BaseResponse.onSuccess(UserConverter.userGroupSearchDTO(users, members));

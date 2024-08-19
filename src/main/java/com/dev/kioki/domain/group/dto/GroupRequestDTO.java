@@ -22,6 +22,6 @@ public class GroupRequestDTO {
 
         private String nickname;
 
-        private String profilePictureUrl;
+        private String profileName;
     }
 }
