@@ -30,7 +30,7 @@ public class GroupMember {
     @JoinColumn(name = "owner_id")
     private User owner;
 
-    private String profilePictureUrl;
+    private String profileName;
     private String noteText;
     private String noteTitle;
     @Builder.Default

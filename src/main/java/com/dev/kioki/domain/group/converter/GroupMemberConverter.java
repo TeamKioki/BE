@@ -33,7 +33,7 @@ public class GroupMemberConverter {
                 .memberId(member.getId())
                 .userId(member.getMemberUserId())
                 .nickname(member.getNickname())
-                .profilePictureUrl(member.getProfilePictureUrl())
+                .profileName(member.getProfileName())
                 .noteTitle(member.getNoteTitle())
                 .noteText(member.getNoteText())
                 .build();
@@ -44,7 +44,7 @@ public class GroupMemberConverter {
                 .memberId(member.getId())
                 .userId(member.getMemberUserId())
                 .nickname(member.getNickname())
-                .profilePictureUrl(member.getProfilePictureUrl())
+                .profileName(member.getProfileName())
                 .noteTitle(member.getNoteTitle())
                 .noteText(member.getNoteText())
                 .color(member.getColor())

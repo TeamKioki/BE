@@ -52,7 +52,7 @@ public class GroupMemberService {
                 .orElseThrow(() -> new GroupHandler(ErrorStatus.USER_NOT_FOUND));
 
 
-        String profilePictureUrl = user.getImageName();
+        String profileName = user.getImageName();
         String noteTitle = user.getIntroduction();
         String noteText = "";
         String nickname = user.getName();
@@ -61,7 +61,7 @@ public class GroupMemberService {
         GroupMember groupMember = GroupMember.builder()
                 .owner(owner)
                 .member(user)
-                .profilePictureUrl(profilePictureUrl)
+                .profileName(profileName)
                 .noteText(noteText)
                 .noteTitle(noteTitle)
                 .nickname(nickname)
@@ -102,8 +102,8 @@ public class GroupMemberService {
         if (memberInfo.getNickname() != null) {
             groupMember.setNickname(memberInfo.getNickname());
         }
-        if (memberInfo.getProfilePictureUrl() != null) {
-            groupMember.setNickname(memberInfo.getProfilePictureUrl());
+        if (memberInfo.getProfileName() != null) {
+            groupMember.setProfileName(memberInfo.getProfileName());
         }
 
         return groupMemberRepository.save(groupMember);

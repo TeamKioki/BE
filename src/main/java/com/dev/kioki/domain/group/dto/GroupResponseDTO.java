@@ -15,7 +15,7 @@ public class GroupResponseDTO {
         private Long memberId;
         private Long userId;
         private String nickname;
-        private String profilePictureUrl;
+        private String profileName;
         private String noteTitle;
         private String noteText;
     }
@@ -41,7 +41,7 @@ public class GroupResponseDTO {
     public static class GroupMemberDetailsDTO {
         private Long memberId;
         private Long userId;
-        private String profilePictureUrl;
+        private String profileName;
         private String noteTitle;
         private String noteText;
         private String color;
