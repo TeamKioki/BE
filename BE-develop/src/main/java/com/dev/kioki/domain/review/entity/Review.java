@@ -23,7 +23,16 @@ public class Review extends BaseEntity {
 
     private Double score;
 
+    private Double avg_score;
+
+    //기타
     private String content;
+
+    //장점 항목
+    private String advantages;
+
+    //단점 항목
+    private String disadvantages;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
