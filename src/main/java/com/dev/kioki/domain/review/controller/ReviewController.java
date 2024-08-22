@@ -44,7 +44,7 @@ public class ReviewController {
         return BaseResponse.onSuccess(ReviewConverter.toCreateReviewResultDTO(review));
     }
 
-    @GetMapping("/{modelId}/select")
+    @GetMapping("/{modelId}")
     @Operation(summary = "특정 모델의 리뷰 목록 조회 API",description = "특정 모델 리뷰들의 목록을 조회하는 API입니다. query String 으로 page 번호를 주세요")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공")

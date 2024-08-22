@@ -23,6 +23,19 @@ public class ReviewResponseDTO {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
+    public static class ReviewPreViewListDTO{
+        List<ReviewPreViewDTO> reviewList; //리뷰 목록이기 때문에 리뷰의 정보를 담음 dto가 필요함
+        Integer listSize;
+        Integer totalPage;
+        Long totalElements;
+        Boolean isFirst;
+        Boolean isLast;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class ReviewPreViewDTO{
         String ownerName;
         Double score;
@@ -36,16 +49,4 @@ public class ReviewResponseDTO {
         LocalDate createdAt;
     }
 
-    @Builder
-    @Getter
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class ReviewPreViewListDTO{
-        List<ReviewPreViewDTO> reviewList; //리뷰 목록이기 때문에 리뷰의 정보를 담음 dto가 필요함
-        Integer listSize;
-        Integer totalPage;
-        Long totalElements;
-        Boolean isFirst;
-        Boolean isLast;
-    }
 }
