@@ -11,9 +11,9 @@ public class ReviewRequestDTO {
 
         String disadvantage_content;
 
-        String advantages;
+        String advantages; //기타
 
-        String disadvantages;
+        String disadvantages; //기타
 
         @NotNull
         Double score;
