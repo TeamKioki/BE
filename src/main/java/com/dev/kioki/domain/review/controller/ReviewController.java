@@ -26,18 +26,18 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "리뷰 관련 컨트롤러")
 public class ReviewController {
     private final ReviewCommandService reviewCommandService;
-    @PostMapping("/{brandId}/ad")
-    @Operation(summary = "키오스크 브랜드에 리뷰 추가",description = "리뷰를 추가합니다.")
+    @PostMapping("/{modelId}/ad")
+    @Operation(summary = "모델에 리뷰 추가",description = "리뷰를 추가합니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공")
     })
     @Parameters({
-            @Parameter(name = "brandId", description = "브랜드 아이디입니다.")
+            @Parameter(name = "modelId", description = "모델 아이디입니다.")
     })
     public BaseResponse<ReviewResponseDTO.CreateReviewResultDTO> createReview(@RequestBody @Valid ReviewRequestDTO.ReviewDTO request,
                                                                       @AuthUser User user,
-                                                                      @PathVariable(name = "brandId") Long brandId){
-        Review review = reviewCommandService.addReview(request, user.getId(), brandId);
+                                                                      @PathVariable(name = "modelId") Long modelId){
+        Review review = reviewCommandService.addReview(request, user.getId(), modelId);
         return BaseResponse.onSuccess(ReviewConverter.toCreateReviewResultDTO(review));
     }
 }

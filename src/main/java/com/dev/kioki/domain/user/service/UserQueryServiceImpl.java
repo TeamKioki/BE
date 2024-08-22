@@ -38,7 +38,9 @@ public class UserQueryServiceImpl implements UserQueryService {
     }
 
     @Override
-    public Optional<User> getUserInfo(Long user_id) { return findUser(user_id); }
+    public Optional<User> getUserInfo(Long user_id) {
+        return findUser(user_id);
+    }
 
     @Override
     public Page<Review> getReviewList(Long user_id, Integer page) {
@@ -52,7 +54,7 @@ public class UserQueryServiceImpl implements UserQueryService {
     public Page<Inquire> getInquireList(Long user_id, Integer page) {
 
         User user = userRepository.findById(user_id).get();
-        Page<Inquire> userPage = inquireRepository.findAllByUser(user, PageRequest.of(page-1, 10));
+        Page<Inquire> userPage = inquireRepository.findAllByUser(user, PageRequest.of(page - 1, 10));
         return userPage;
     }
 
@@ -69,7 +71,7 @@ public class UserQueryServiceImpl implements UserQueryService {
 
     @Override
     public List<Model> getModelsByUser(Long user_id) {
-       return modelRepository.findModelsByUserId(user_id);
+        return modelRepository.findModelsByUserId(user_id);
     }
 
     @Override
