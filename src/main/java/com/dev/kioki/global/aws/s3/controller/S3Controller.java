@@ -34,15 +34,4 @@ public class S3Controller {
     ) {
         return BaseResponse.onSuccess(s3Service.getPresignedUrlToUpload(fileName));
     }
-
-    @Operation(summary = "파일 다운로드용 presignedUrl 생성 요청", description = "파일 다운로드를 위한 presignedUrl 생성을 요청하는 API 입니다.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "COMMON200", description = "성공입니다."),
-    })
-    @GetMapping("/presigned/download")
-    public BaseResponse<PresignedUrlToDownloadDTO> getPresignedUrlToDownload(
-            @RequestParam(value = "keyName") String keyName
-    ) {
-        return BaseResponse.onSuccess(s3Service.getPresignedUrlToDownload(keyName));
-    }
 }
