@@ -40,14 +40,14 @@ public class ReviewConverter {
                 .createdAt(review.getCreatedAt().toLocalDate())
                 .build();
     }
-    public static ReviewResponseDTO.ReviewPreViewListDTO reviewPreViewListDTO(Page<Review> reviewPage) {
-        List<ReviewResponseDTO.ReviewPreViewDTO> reviewPreViewDTOList = reviewPage.stream()
+    public static ReviewResponseDTO.ReviewPreViewListDTO reviewPreViewListDTO(Page<Review> reviewList) {
+        List<ReviewResponseDTO.ReviewPreViewDTO> reviewPreViewDTOList = reviewList.stream()
                 .map(ReviewConverter::reviewPreViewDTO).collect(Collectors.toList());
         return ReviewResponseDTO.ReviewPreViewListDTO.builder()
-                .isLast(reviewPage.isLast())
-                .isFirst(reviewPage.isFirst())
-                .totalPage(reviewPage.getTotalPages())
-                .totalElements(reviewPage.getTotalElements())
+                .isLast(reviewList.isLast())
+                .isFirst(reviewList.isFirst())
+                .totalPage(reviewList.getTotalPages())
+                .totalElements(reviewList.getTotalElements())
                 .listSize(reviewPreViewDTOList.size())
                 .reviewList(reviewPreViewDTOList)
                 .build();
