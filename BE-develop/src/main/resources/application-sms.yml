@@ -1,6 +1,0 @@
-sms:
-  api:
-    key:  ${SMS_API_KEY}
-    secret: ${SMS_API_SECRET}
-    sender: ${SMS_SENDER}
-  auth-code-expiration-seconds: 180000

@@ -38,7 +38,7 @@ public class UserConverter {
                 .name(review.getUser().getName())
                 .score(review.getScore())
                 .createdAt(review.getCreatedAt())
-                .content(review.getContent())
+                //.content(review.getContent())
                 .build();
 
     }
