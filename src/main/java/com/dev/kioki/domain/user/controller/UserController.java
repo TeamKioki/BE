@@ -1,5 +1,6 @@
 package com.dev.kioki.domain.user.controller;
 
+import com.dev.kioki.domain.auth.dto.AuthDTO;
 import com.dev.kioki.domain.inquire.entity.Inquire;
 import com.dev.kioki.domain.kiosk.entity.Model;
 import com.dev.kioki.domain.review.entity.Review;
@@ -147,4 +148,13 @@ public class UserController {
         return BaseResponse.onSuccess(UserConverter.userModelListDTO(getModelsByUser));
     }
 
+    @Tag(name ="유저 키오스크 어려움 관련 컨트롤러")
+    @PostMapping("/difficulty")
+    @Operation(summary="키오스크 사용 어려움 조회 API", description="키오스크 사용 어려움 조회 API 입니다." )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "COMMON200", description = "성공입니다."),
+    })
+    public BaseResponse<List<UserResponseDTO.UserDifficultyDTO>> getDifficulty() {
+        return BaseResponse.onSuccess(userQueryService.getDifficulty());
+    }
 }

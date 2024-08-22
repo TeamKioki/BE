@@ -4,6 +4,7 @@ import com.dev.kioki.domain.group.entity.GroupMember;
 import com.dev.kioki.domain.inquire.entity.Inquire;
 import com.dev.kioki.domain.kiosk.entity.Model;
 import com.dev.kioki.domain.store.entity.Store;
+import com.dev.kioki.domain.user.entity.Difficulty;
 import com.dev.kioki.domain.user.entity.User;
 import com.dev.kioki.domain.review.entity.Review;
 import com.dev.kioki.domain.user.dto.UserResponseDTO;
@@ -115,5 +116,18 @@ public class UserConverter {
     public static List<UserResponseDTO.UserModelDTO> userModelListDTO(List<Model> model) {
 
         return model.stream().map(UserConverter::userModelDTO).toList();
+    }
+
+    public static UserResponseDTO.UserDifficultyDTO toUserDifficultyDTO(Difficulty difficulty) {
+        return UserResponseDTO.UserDifficultyDTO.builder()
+                .reasonId(difficulty.getId())
+                .reason(difficulty.getReason())
+                .build();
+    }
+
+    public static List<UserResponseDTO.UserDifficultyDTO> toUserDifficultyDTOList(List<Difficulty> difficultyList) {
+        return difficultyList.stream()
+                .map(UserConverter::toUserDifficultyDTO)
+                .toList();
     }
 }

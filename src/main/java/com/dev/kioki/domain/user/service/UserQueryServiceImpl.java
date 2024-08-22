@@ -7,7 +7,10 @@ import com.dev.kioki.domain.kiosk.entity.Model;
 import com.dev.kioki.domain.kiosk.repository.ModelRepository;
 import com.dev.kioki.domain.review.entity.Review;
 import com.dev.kioki.domain.review.repository.ReviewRepository;
+import com.dev.kioki.domain.user.converter.UserConverter;
+import com.dev.kioki.domain.user.dto.UserResponseDTO;
 import com.dev.kioki.domain.user.entity.User;
+import com.dev.kioki.domain.user.repository.DifficultyRepository;
 import com.dev.kioki.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -27,6 +30,7 @@ public class UserQueryServiceImpl implements UserQueryService {
     private final UserRepository userRepository;
     private final InquireRepository inquireRepository;
     private final ModelRepository modelRepository;
+    private final DifficultyRepository difficultyRepository;
 
     @Override
     public Optional<User> findUser(Long id) {
@@ -68,5 +72,8 @@ public class UserQueryServiceImpl implements UserQueryService {
        return modelRepository.findModelsByUserId(user_id);
     }
 
-
+    @Override
+    public List<UserResponseDTO.UserDifficultyDTO> getDifficulty() {
+        return UserConverter.toUserDifficultyDTOList(difficultyRepository.findAll());
+    }
 }
