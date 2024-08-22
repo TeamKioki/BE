@@ -3,7 +3,6 @@ package com.dev.kioki.domain.user.entity;
 import com.dev.kioki.domain.group.entity.GroupMember;
 import com.dev.kioki.domain.inquire.entity.Inquire;
 import com.dev.kioki.domain.kiosk.entity.Model;
-import com.dev.kioki.domain.store.entity.Store;
 import com.dev.kioki.domain.user.entity.enums.FontSize;
 import com.dev.kioki.domain.review.entity.Review;
 import com.dev.kioki.domain.user.entity.enums.UserRole;
@@ -43,9 +42,9 @@ public class User extends BaseEntity {
 
     private String fontColor;
 
-    private String kioskDifficulty;
-
     private String imageName;
+
+    private String kioskDifficulty;
 
     @Enumerated(EnumType.STRING)
     @ColumnDefault("'ROLE_USER'")

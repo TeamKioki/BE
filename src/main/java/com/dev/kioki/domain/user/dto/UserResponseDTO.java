@@ -97,4 +97,13 @@ public class UserResponseDTO {
         Float rate;
         List<Long> stores_id;
     }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UserDifficultyDTO {
+        Long reasonId;
+        String reason;
+    }
 }
