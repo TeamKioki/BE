@@ -17,6 +17,6 @@ public class ModelRequestDTO {
 
         private Integer level;
 
-        private Float rate;
+        private Double rate;
     }
 }

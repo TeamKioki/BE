@@ -19,7 +19,7 @@ public class StoreResponseDTO {
 
         private Integer level;
 
-        private Float rate;
+        private Double rate;
 
         private Float distance;
 

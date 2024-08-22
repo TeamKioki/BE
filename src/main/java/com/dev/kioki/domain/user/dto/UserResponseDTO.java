@@ -94,7 +94,7 @@ public class UserResponseDTO {
         String name;
         String imageUrl;
         Integer level;
-        Float rate;
+        Double rate;
         List<Long> stores_id;
     }
 

@@ -21,6 +21,6 @@ public class ModelResponseDTO {
 
         private Integer level;
 
-        private Float rate;
+        private Double rate;
     }
 }
