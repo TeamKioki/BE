@@ -66,7 +66,8 @@ public class SecurityConfig {
             "/api/v1/auth/join/**",
             "/api/v1/auth/sms/**",
             "/api/v1/auth/reissueToken/**",
-            "/health"
+            "/health",
+            "/api/v1/s3/presigned/upload/**"
     };
 
     @Bean

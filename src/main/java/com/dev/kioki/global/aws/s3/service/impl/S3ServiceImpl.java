@@ -45,17 +45,7 @@ public class S3ServiceImpl implements S3Service {
     }
 
     @Override
-    public PresignedUrlToDownloadDTO getPresignedUrlToDownload(String keyName) {
-
-        Date expiration = new Date();
-        long expTime = expiration.getTime();
-        expTime += TimeUnit.MINUTES.toMillis(3);
-        expiration.setTime(expTime);
-
-        GeneratePresignedUrlRequest generatePresignedRequest = new GeneratePresignedUrlRequest(bucket, keyName)
-                .withMethod(HttpMethod.GET)
-                .withExpiration(expiration);
-
-        return new PresignedUrlToDownloadDTO(amazonS3.generatePresignedUrl(generatePresignedRequest).toString());
+    public String generateStaticUrl(String keyName) {
+        return "https://" + bucket + ".s3." + amazonS3.getRegionName() + ".amazonaws.com/" + keyName;
     }
 }
