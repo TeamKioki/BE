@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Transactional
 public class ReviewQueryServiceImpl implements ReviewQueryService {
-    private final ReviewRepository reviewRepository;
 
 
 }
