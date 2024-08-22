@@ -13,7 +13,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -23,10 +22,9 @@ import org.springframework.web.bind.annotation.*;
 @Validated
 @RequiredArgsConstructor
 @RequestMapping("/reviews")
-@Tag(name = "리뷰 관련 컨트롤러")
 public class ReviewController {
     private final ReviewCommandService reviewCommandService;
-    @PostMapping("/{brandId}/ad")
+    @PostMapping("/{brandId}/add")
     @Operation(summary = "키오스크 브랜드에 리뷰 추가",description = "리뷰를 추가합니다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공")

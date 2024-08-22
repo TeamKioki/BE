@@ -5,7 +5,7 @@ import com.dev.kioki.domain.review.Handler.ReviewHandler;
 import com.dev.kioki.domain.review.converter.ReviewConverter;
 import com.dev.kioki.domain.review.dto.ReviewRequestDTO;
 import com.dev.kioki.domain.review.entity.Review;
-import com.dev.kioki.domain.brand.repository.BrandRepository;
+import com.dev.kioki.domain.review.repository.BrandRepository;
 import com.dev.kioki.domain.review.repository.ReviewRepository;
 import com.dev.kioki.domain.user.repository.UserRepository;
 import com.dev.kioki.global.common.code.status.ErrorStatus;
