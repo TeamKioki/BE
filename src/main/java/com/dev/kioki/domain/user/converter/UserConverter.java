@@ -23,7 +23,7 @@ public class UserConverter {
                     .name(user.getName())
                     .phone(user.getPhone())
                     .introduction(user.getIntroduction())
-                    .imageName(user.getImageName())
+                    .imageName(user.getImageUrl())
                     .fontSize(user.getFontSize())
                     .fontColor(user.getFontColor())
                     .reviewList(user.getReviewList())
@@ -94,7 +94,7 @@ public class UserConverter {
                     .phone(user.getPhone())
                     .isGroupMember(isGroupMember)
                     .introduction(user.getIntroduction())
-                    .imageName(user.getImageName())
+                    .imageName(user.getImageUrl())
                     .build();
         }).collect(Collectors.toList());
     }

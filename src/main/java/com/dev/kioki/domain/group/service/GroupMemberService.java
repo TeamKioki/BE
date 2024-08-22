@@ -52,7 +52,7 @@ public class GroupMemberService {
                 .orElseThrow(() -> new GroupHandler(ErrorStatus.USER_NOT_FOUND));
 
 
-        String profilePictureUrl = user.getImageName();
+        String profilePictureUrl = user.getImageUrl();
         String noteTitle = user.getIntroduction();
         String noteText = "";
         String nickname = user.getName();

@@ -30,14 +30,14 @@ public class AuthConverter {
                 .build();
     }
 
-    public static User toUser(JoinRequest request) {
+    public static User toUser(JoinRequest request, String imageUrl) {
         return User.builder()
                 .name(request.getName())
                 .phone(request.getPhone())
                 .birthday(request.getBirthday())
                 .introduction(request.getIntroduction())
                 .kioskDifficulty(request.getKioskDifficulty())
-                .imageName(request.getImageName())
+                .imageUrl(imageUrl)
                 .userRole(UserRole.ROLE_USER)
                 .build();
     }

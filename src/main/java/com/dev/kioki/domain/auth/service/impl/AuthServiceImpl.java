@@ -6,6 +6,7 @@ import com.dev.kioki.domain.auth.dto.AuthDTO.AuthRequest.*;
 import com.dev.kioki.domain.auth.service.AuthService;
 import com.dev.kioki.domain.user.entity.User;
 import com.dev.kioki.domain.user.repository.UserRepository;
+import com.dev.kioki.global.aws.s3.service.S3Service;
 import com.dev.kioki.global.error.handler.AuthException;
 import com.dev.kioki.global.error.handler.SmsException;
 import com.dev.kioki.global.redis.RedisUtil;
@@ -32,11 +33,18 @@ public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
     @Value("${sms.auth-code-expiration-seconds}")
     private Long authCodeExpirationSeconds;
+    private final S3Service s3Service;
 
     @Override
     @Transactional
     public TokenResponse join(JoinRequest request) {
-        User user = AuthConverter.toUser(request);
+
+        String imageUrl = request.getImageKey() != null && !request.getImageKey().isEmpty()
+                ? s3Service.generateStaticUrl(request.getImageKey())
+                : null;
+
+        User user = AuthConverter.toUser(request, imageUrl);
+
         userRepository.save(user);
 
         String accessToken = jwtUtil.createAccessToken(user.getId().toString(), user.getPhone(), user.getUserRole().toString());

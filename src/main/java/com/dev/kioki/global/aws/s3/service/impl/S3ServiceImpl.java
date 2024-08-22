@@ -22,7 +22,7 @@ public class S3ServiceImpl implements S3Service {
 
     private final AmazonS3 amazonS3;
 
-    @Value("${S3_BUCKET}")
+    @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
     @Override
@@ -57,5 +57,12 @@ public class S3ServiceImpl implements S3Service {
                 .withExpiration(expiration);
 
         return new PresignedUrlToDownloadDTO(amazonS3.generatePresignedUrl(generatePresignedRequest).toString());
+    }
+
+    @Override
+    public String generateStaticUrl(String keyName) {
+        log.info("bucket : {}", bucket);
+        log.info("amazonS3.getRegionName() : {}", amazonS3.getRegionName());
+        return "https://" + bucket + ".s3." + amazonS3.getRegionName() + ".amazonaws.com/" + keyName;
     }
 }

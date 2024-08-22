@@ -16,7 +16,7 @@ public class AuthDTO {
         public static class JoinRequest {
             @NotBlank String name;
             @PhoneDuplication @NotBlank String phone;
-            String imageName;
+            String imageKey;
             @NotNull LocalDate birthday;
             String introduction;
             @NotBlank String kioskDifficulty;

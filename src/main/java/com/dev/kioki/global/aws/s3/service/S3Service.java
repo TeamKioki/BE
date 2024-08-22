@@ -7,4 +7,6 @@ public interface S3Service {
     PresignedUrlToUploadDTO getPresignedUrlToUpload(String fileName);
 
     PresignedUrlToDownloadDTO getPresignedUrlToDownload(String keyName);
+
+    String generateStaticUrl(String keyName);
 }
