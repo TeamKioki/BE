@@ -48,6 +48,9 @@ public enum ErrorStatus implements BaseErrorCode {
     // 키오스크 모델 관련 에러
     MODEL_NOT_FOUND(HttpStatus.NOT_FOUND, "MODEL404", "키오스크 모델이 존재하지 않습니다."),
 
+    //리뷰 관련 에러
+    ADVANTAGE_CONTENT_NOT_FOUND(HttpStatus.NOT_FOUND, "REVIEW400", "장점 평가가 선택/작성되지 않았습니다."),
+    DISADVANTAGE_CONTENT_NOT_FOUND(HttpStatus.NOT_FOUND, "REVIEW401", "단점 평가가 선택/작성되지 않았습니다.")
     ;
 
     private final HttpStatus httpStatus;

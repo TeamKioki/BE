@@ -9,7 +9,4 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface ReviewRepository extends JpaRepository<Review, Long> {
     Page<Review> findAllByUser(User user, PageRequest pageRequest);
-
-    @Query("SELECT AVG(score) FROM Review WHERE ")
-    Double avgScore();
 }

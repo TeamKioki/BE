@@ -1,5 +1,6 @@
 package com.dev.kioki.domain.review.controller;
 
+import com.dev.kioki.domain.review.converter.ReviewConverter;
 import com.dev.kioki.domain.review.dto.ReviewRequestDTO;
 import com.dev.kioki.domain.review.dto.ReviewResponseDTO;
 import com.dev.kioki.domain.review.entity.Review;
@@ -35,6 +36,6 @@ public class ReviewController {
                                                                       @AuthUser User user,
                                                                       @PathVariable(name = "brandId") Long brandId){
         Review review = reviewCommandService.addReview(request, user.getId(), brandId);
-        return BaseResponse.onSuccess(StoreConverter.StoreToDTO(store));
+        return BaseResponse.onSuccess(ReviewConverter.toCreateReviewResultDTO(review));
     }
 }
