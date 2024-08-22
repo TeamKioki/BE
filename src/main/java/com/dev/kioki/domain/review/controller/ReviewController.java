@@ -26,8 +26,8 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "리뷰 관련 컨트롤러")
 public class ReviewController {
     private final ReviewCommandService reviewCommandService;
-    @PostMapping("/{modelId}/ad")
-    @Operation(summary = "모델에 리뷰 추가",description = "리뷰를 추가합니다.")
+    @PostMapping("/{modelId}/add")
+    @Operation(summary = "모델에 리뷰 추가",description = "리뷰를 추가합니다. score는 double형으로 주세요")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공")
     })

@@ -47,7 +47,7 @@ public class ReviewCommandServiceImpl implements ReviewCommandService {
 
         reviewRepository.save(review);
 
-        //브랜드 평균 점수 갱신
+        //평균 점수 갱신
 
         Model model = review.getModel();
         model.setRate(modelRepository.avgRate(modelId));
