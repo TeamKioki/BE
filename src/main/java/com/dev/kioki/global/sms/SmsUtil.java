@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import static com.dev.kioki.global.common.code.status.ErrorStatus.SMS_CODE_SEND_FAIL;
 
@@ -48,24 +49,10 @@ public class SmsUtil {
     }
 
     public String createCode() {
-        StringBuffer code = new StringBuffer();
         Random random = new Random();
-
-        for (int i = 0; i < 8; i++) {
-            int index = random.nextInt(3);
-
-            switch (index) {
-                case 0:
-                    code.append((char) (random.nextInt(26) + 'A'));
-                    break;
-                case 1:
-                    code.append((char) (random.nextInt(26) + 'a'));
-                    break;
-                case 2:
-                    code.append((random.nextInt(10)));
-                    break;
-            }
-        }
-        return code.toString();
+        return random.ints(6, 0, 10)
+                .mapToObj(String::valueOf)
+                .collect(Collectors.joining());
     }
+
 }
