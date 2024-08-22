@@ -27,15 +27,9 @@ public class Brand {
 
     private String name;
 
-    //평균 점수
-    private Double avgScore;
-
     @Enumerated(EnumType.STRING)
     @ColumnDefault("'FASTFOOD'")
     private BrandType brandType;
 
     private String imageUrl;
-
-    @OneToMany(mappedBy = "brand", cascade = CascadeType.ALL)
-    private List<Review> reviewList = new ArrayList<>();
 }

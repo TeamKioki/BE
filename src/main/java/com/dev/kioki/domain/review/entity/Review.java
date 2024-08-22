@@ -1,6 +1,7 @@
 package com.dev.kioki.domain.review.entity;
 
 import com.dev.kioki.domain.brand.entity.Brand;
+import com.dev.kioki.domain.kiosk.entity.Model;
 import com.dev.kioki.domain.user.entity.User;
 import com.dev.kioki.global.common.BaseEntity;
 import jakarta.persistence.*;
@@ -40,8 +41,8 @@ public class Review extends BaseEntity {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "brand_id")
-    private Brand brand;
+    @JoinColumn(name = "model_id")
+    private Model model;
 
     public void setUser(User user){
         if(this.user != null)
@@ -50,10 +51,10 @@ public class Review extends BaseEntity {
         user.getReviewList().add(this);
     }
 
-    public void setBrand(Brand brand){
-        if(this.brand != null)
-            brand.getReviewList().remove(this);
-        this.brand = brand;
-        brand.getReviewList().add(this);
+    public void setModel(Model model){
+        if(this.model != null)
+            model.getReviewList().remove(this);
+        this.model = model;
+        model.getReviewList().add(this);
     }
 }

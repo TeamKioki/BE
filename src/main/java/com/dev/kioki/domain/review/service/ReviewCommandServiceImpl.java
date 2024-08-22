@@ -1,6 +1,8 @@
 package com.dev.kioki.domain.review.service;
 
 import com.dev.kioki.domain.brand.entity.Brand;
+import com.dev.kioki.domain.kiosk.entity.Model;
+import com.dev.kioki.domain.kiosk.repository.ModelRepository;
 import com.dev.kioki.domain.review.Handler.ReviewHandler;
 import com.dev.kioki.domain.review.converter.ReviewConverter;
 import com.dev.kioki.domain.review.dto.ReviewRequestDTO;
@@ -19,6 +21,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ReviewCommandServiceImpl implements ReviewCommandService {
 
+    private final ModelRepository modelRepository;
+
     private final ReviewRepository reviewRepository;
 
     private final UserRepository userRepository;
@@ -26,7 +30,7 @@ public class ReviewCommandServiceImpl implements ReviewCommandService {
     private final BrandRepository brandRepository;
 
     @Override
-    public Review addReview(ReviewRequestDTO.ReviewDTO request, Long userId, Long brandId){
+    public Review addReview(ReviewRequestDTO.ReviewDTO request, Long userId, Long modelId){
 
         //장점, 단점 선택/작성되지 않았을 경우 에러 처리
         if(request.getAdvantage_content() == null && request.getAdvantages() == null)
@@ -39,15 +43,15 @@ public class ReviewCommandServiceImpl implements ReviewCommandService {
 
         //id 매핑
         review.setUser(userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found")));
-        review.setBrand(brandRepository.findById(brandId).orElseThrow(() -> new EntityNotFoundException("Brand not found")));
+        review.setModel(modelRepository.findById(modelId).orElseThrow(() -> new EntityNotFoundException("Model not found")));
 
         reviewRepository.save(review);
 
         //브랜드 평균 점수 갱신
 
-        Brand brand = review.getBrand();
-        brand.setAvgScore(brandRepository.avgScore(brandId));
-        brandRepository.save(brand);
+        Model model = review.getModel();
+        model.setRate(modelRepository.avgRate(modelId));
+        modelRepository.save(model);
 
         return review;
     }
